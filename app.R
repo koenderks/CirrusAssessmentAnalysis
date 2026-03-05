@@ -530,7 +530,7 @@ ui <- fluidPage(
       h2("Instructions"),
       tags$ol(
         tags$li("Go to Cirrus → Reports"),
-        tags$li('Select the test and export "Candidate scores - with criterum scores"'),
+        tags$li(HTML('Select the test and export "Candidate scores - with criterum scores" (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/refs/heads/main/example.xlsx" target="_blank"><u>here</u></a> for an example file).')),
         tags$li("Upload the exported file below and check overview"),
         tags$li('Review results in tabs and click "Download Report" for interpretations in HTML-format'),
         tags$li('Right-click and "Print Page" and select PDF')
