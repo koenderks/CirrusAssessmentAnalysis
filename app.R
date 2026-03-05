@@ -441,8 +441,8 @@ create_corr_plot <- function(input, parsed) {
       scale_fill_gradient2(name = NULL, low = "firebrick", mid = "white", high = "forestgreen", na.value = "black", midpoint = 0, limits = c(-1, 1), breaks = col_breaks) + 
       scale_x_discrete(name = "Item (Cirrus ID)", breaks = xBreaks) +
       scale_y_discrete(name = "Item (Cirrus ID)", breaks = yBreaks) + 
-      geom_segment(x = -Inf, xend = -Inf, y = 0.5, yend = length(yBreaks) + 0.5) +
-      geom_segment(y = -Inf, yend = -Inf, x = 0.5, xend = length(xBreaks) + 0.5) +
+      geom_segment(x = -Inf, xend = -Inf, y = 1, yend = length(yBreaks)) +
+      geom_segment(y = -Inf, yend = -Inf, x = 1, xend = length(xBreaks)) +
       theme_nyenrode() + 
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.position = "top",
