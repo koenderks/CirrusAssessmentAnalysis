@@ -10,6 +10,181 @@ library(shinyjs)
 library(knitr)
 library(kableExtra)
 
+build_report_html <- function(
+    name,
+    examiner,
+    descriptives,
+    hist_plot,
+    test_stats,
+    item_stats,
+    item_plot,
+    corr_plot
+) {
+  
+  library(htmltools)
+  library(knitr)
+  
+  # ----- Derived interpretations -----
+  
+  participants <- descriptives$Value[
+    descriptives$Statistic == "Number of participants"
+  ]
+  
+  avg_score <- descriptives$Value[
+    descriptives$Statistic == "Average achieved score"
+  ]
+  
+  median_score <- descriptives$Value[
+    descriptives$Statistic == "Median achieved score"
+  ]
+  
+  sd_score <- descriptives$Value[
+    descriptives$Statistic == "Standard deviation"
+  ]
+  
+  skew <- as.numeric(
+    descriptives$Value[descriptives$Statistic == "Skewness"]
+  )
+  
+  sd_text <- if (as.numeric(sd_score) > 10)
+    "considerable variability"
+  else
+    "relatively consistent performance"
+  
+  skew_text <- if (skew > 0.5)
+    "positively skewed, with a tendency toward lower scores"
+  else if (skew < -0.5)
+    "negatively skewed, with a tendency toward higher scores"
+  else
+    "approximately symmetric"
+  
+  difficulty_range <- if (mean(item_stats$P) > 0.7)
+    "upper"
+  else
+    "middle/lower"
+  
+  # ----- Save plots -----
+  
+  hist_file <- tempfile(fileext = ".png")
+  item_file <- tempfile(fileext = ".png")
+  corr_file <- tempfile(fileext = ".png")
+  
+  ggsave(hist_file, hist_plot, width = 7, height = 4, dpi = 300)
+  ggsave(item_file, item_plot, width = 9, height = 5, dpi = 300)
+  ggsave(corr_file, corr_plot, width = 11, height = 11, dpi = 300)
+  
+  # ----- Tables -----
+  
+  desc_tab  <- knitr::kable(descriptives, format = "html")
+  test_tab  <- knitr::kable(test_stats, format = "html")
+  item_tab  <- knitr::kable(item_stats, format = "html")
+  
+  # ----- HTML document -----
+  
+  tagList(
+    
+    tags$html(
+      
+      tags$head(
+        tags$title("Assessment Report"),
+        tags$style(HTML("
+          body {font-family: Arial; margin:40px;}
+          h1 {color:#00205B;}
+          h2 {margin-top:40px;}
+          table {border-collapse: collapse; width:100%;}
+          th,td {border:1px solid #ddd; padding:6px;}
+          th {background:#f4f6fb;}
+          img {max-width:100%; margin-top:10px;}
+        "))
+      ),
+      
+      tags$body(
+        
+        h1(sprintf("Assessment Report: %s", name)),
+        
+        p(
+          sprintf(
+            "Report generated on %s by %s",
+            format(Sys.time(), "%d-%m-%Y"),
+            examiner
+          )
+        ),
+        
+        tags$hr(),
+        
+        h2("1. Summary"),
+        
+        h3("1.1 Descriptive statistics"),
+        
+        p(
+          sprintf(
+            paste(
+              "The assessment included %s participants.",
+              "The average score achieved was %s,",
+              "with a median of %s.",
+              "The standard deviation was %s,",
+              "indicating %s among participants.",
+              "The skewness of the score distribution is %s,",
+              "suggesting the distribution is %s."
+            ),
+            participants,
+            avg_score,
+            median_score,
+            sd_score,
+            sd_text,
+            skew,
+            skew_text
+          )
+        ),
+        
+        HTML(desc_tab),
+        
+        h3("1.2 Distribution of Achieved Scores"),
+        
+        p(
+          sprintf(
+            paste(
+              "The histogram shows that most students",
+              "achieved scores in the %s range.",
+              "Peaks at extremes may indicate ceiling or floor effects."
+            ),
+            difficulty_range
+          )
+        ),
+        
+        img(src = hist_file),
+        
+        h2("2. Classical Assessment Analysis"),
+        
+        h3("2.1 Assessment Statistics"),
+        
+        p(
+          paste(
+            "Average P indicates item difficulty.",
+            "RIT and RIR measure discrimination.",
+            "Cronbach's alpha indicates internal consistency."
+          )
+        ),
+        
+        HTML(test_tab),
+        
+        h3("2.2 Item Statistics"),
+        
+        HTML(item_tab),
+        
+        h3("2.3 Item Difficulty & Discrimination"),
+        
+        img(src = item_file),
+        
+        h3("2.4 Item Correlation Matrix"),
+        
+        img(src = corr_file)
+        
+      )
+    )
+  )
+}
+
 # ---------------------------
 # Brand colors & ggplot theme
 # ---------------------------
@@ -75,8 +250,8 @@ create_descriptives_table <- function(input, parsed) {
       mean = paste0(round(mean(totalScores), digits), " (", paste0(round(mean(totalScores) / maxScore * 100, digits), "%"), ")"),
       median = paste0(round(median(totalScores), digits), " (", paste0(round(median(totalScores) / maxScore * 100, digits), "%"), ")"),
       sd = round(sd(totalScores), digits),
-      skewness = round(psych::skew(totalScores), digits),
-      kurtosis = round(psych::kurtosi(totalScores), digits)
+      skewness = round(psych::describe(totalScores)$skew, digits),
+      kurtosis = round(psych::describe(totalScores)$kurtosis, digits)
     )
   }
   
@@ -122,7 +297,7 @@ create_histogram <- function(input, parsed) {
 create_test_stats <- function(input, parsed) {
   
   if (is.null(input$file)) {
-    tab <- data.frame(P = NA, RIT = NA, RIT = NA, alpha = NA)
+    tab <- data.frame(P = NA, RIT = NA, RIR = NA, alpha = NA)
   } else {
     
     req(parsed())
@@ -626,39 +801,62 @@ server <- function(input, output, session) {
   output$corr_plot <- renderPlot(corr_plot_react())
   
   # Export (HTML report via R Markdown template)
+  # output$export <- downloadHandler(
+  #   filename = function() paste0("assessment_report_", input$name, ".html"),
+  #   content = function(file) {
+  #     withProgress(message = "Generating report...", value = 0, {
+  #       
+  #       # Step 1: Copy the Rmd template
+  #       incProgress(0.3, detail = "Copying template...")
+  #       tempReport <- file.path(tempdir(), "report.Rmd")
+  #       download.file(url = "https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/refs/heads/main/report.Rmd", destfile = tempReport)
+  #       #file.copy("report.Rmd", tempReport, overwrite = TRUE)
+  #       
+  #       # Step 2: Render HTML
+  #       incProgress(0.3, detail = "Rendering HTML...")
+  #       rmarkdown::render(
+  #         input = tempReport,
+  #         output_file = file,
+  #         params = list(
+  #           name          = input$name,
+  #           name_examiner = input$name_examiner,
+  #           descriptives  = descriptives_react(),
+  #           hist_plot     = histogram_react(),
+  #           test_stats    = test_stats_react(),
+  #           item_stats    = item_stats_react(),
+  #           item_plot     = item_plot_react(),
+  #           corr_plot     = corr_plot_react()
+  #         ),
+  #         envir = new.env(parent = globalenv()),
+  #         quiet = TRUE
+  #       )
+  #       
+  #       # Step 4: Finish
+  #       incProgress(1, detail = "Done!")
+  #     })
+  #   }
+  # )
   output$export <- downloadHandler(
-    filename = function() paste0("assessment_report_", input$name, ".html"),
+    
+    filename = function() {
+      paste0("assessment_report_", input$name, ".html")
+    },
+    
     content = function(file) {
-      withProgress(message = "Generating report...", value = 0, {
-        
-        # Step 1: Copy the Rmd template
-        incProgress(0.3, detail = "Copying template...")
-        tempReport <- file.path(tempdir(), "report.Rmd")
-        download.file(url = "https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/refs/heads/main/report.Rmd", destfile = tempReport)
-        #file.copy("report.Rmd", tempReport, overwrite = TRUE)
-        
-        # Step 2: Render HTML
-        incProgress(0.3, detail = "Rendering HTML...")
-        rmarkdown::render(
-          input = tempReport,
-          output_file = file,
-          params = list(
-            name          = input$name,
-            name_examiner = input$name_examiner,
-            descriptives  = descriptives_react(),
-            hist_plot     = histogram_react(),
-            test_stats    = test_stats_react(),
-            item_stats    = item_stats_react(),
-            item_plot     = item_plot_react(),
-            corr_plot     = corr_plot_react()
-          ),
-          envir = new.env(parent = globalenv()),
-          quiet = TRUE
-        )
-        
-        # Step 4: Finish
-        incProgress(1, detail = "Done!")
-      })
+      
+      report <- build_report_html(
+        input$name,
+        input$name_examiner,
+        descriptives_react(),
+        histogram_react(),
+        test_stats_react(),
+        item_stats_react(),
+        item_plot_react(),
+        corr_plot_react()
+      )
+      
+      htmltools::save_html(report, file)
+      
     }
   )
 }
