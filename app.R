@@ -109,6 +109,7 @@ build_report_html <- function(
             vertical-align: middle !important;
             color: #00205B !important;  /* header color */
             background: #f4f6fb; /* keep light background */
+            border: 0.5px solid #ddd;
             padding: 6px;
           }
           
@@ -118,6 +119,7 @@ build_report_html <- function(
             vertical-align: middle !important;
             color: #00205B !important;  /* header color */
             background: #f4f6fb; /* keep light background */
+            border: 0.5px solid #ddd;
             padding: 6px;
           }
           
@@ -403,7 +405,7 @@ create_item_plot <- function(input, parsed) {
     df_long <- reshape(df, varying = list(c("P", "RIT")), v.names = "value", timevar = "metric", times = c("P", "RIT"), direction = "long")
     yBreaks <- pretty(c(0, 1, df_long$value), min.n = 4)
     p <- ggplot(df_long, aes(x = item, y = value, fill = metric)) +
-      geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+      geom_bar(stat = "identity", width = 0.75, position = position_dodge(width = 0.75), color = "black") +
       scale_fill_manual(name = NULL, values = c(nyenrode_gold, nyenrode_blue2), labels = c("P (Difficulty)", "RIT (Discrimination)")) +
       scale_y_continuous(name = NULL, limits = c(min(yBreaks), max(yBreaks)), breaks = yBreaks) +
       scale_x_discrete(name = "Item (Cirrus ID)") +
@@ -518,8 +520,7 @@ ui <- fluidPage(
   
   # --- Title bar ---
   tags$div(class = "app-title-bar",
-           tags$div(class = "app-title", "Nyenrode Advanced Assessment Analysis"),
-           tags$div(class = "app-subtitle", "Gaining insight into the quality of your summative assessment")
+           tags$div(class = "app-title", "Advanced Assessment Analysis")
   ),
   
   # --- Layout with persistent sidebar ---
@@ -530,20 +531,20 @@ ui <- fluidPage(
       tags$ol(
         tags$li("Go to Cirrus → Reports"),
         tags$li('Select the test and export "Candidate scores - with criterum scores"'),
-        tags$li("Remove identifying information (e.g., name, email)"),
         tags$li("Upload the exported file below and check overview"),
-        tags$li('Review results in tabs and click "Download Report" for interpretations')
+        tags$li('Review results in tabs and click "Download Report" for interpretations in HTML-format'),
+        tags$li('Right-click and "Print Page" and select PDF')
       ),
-      fileInput("file", "Upload candidate scores (.xlsx)", accept = ".xlsx"),
+      fileInput("file", HTML("<b>Upload candidate scores (.xlsx from Cirrus)</b>"), accept = ".xlsx", buttonLabel = HTML("<b>Browse...</b>")),
       section_card(
-        "Overview",
+        "IMPORTANT: OVERVIEW",
         uiOutput("dataset_info")
       ),
-      textInput("name", label = "Assessment", placeholder = "e.g., Management - Final Exam"),
+      textInput("name", label = "Assessment", placeholder = "e.g., Management Accounting - Final Exam"),
       textInput("name_examiner", label = "Examiner", placeholder = "e.g., Eric Xaminer"),
       div(
         class = "mt-3",
-        actionButton("refresh", "Refresh", class = "btn btn-outline-secondary"),
+        actionButton("refresh", HTML("<b>Refresh</b>"), class = "btn btn-outline-secondary"),
         tags$span(" "),
         downloadButton(outputId = "export", label = "Download Report", class = "btn btn-primary")
       ),
@@ -557,7 +558,6 @@ ui <- fluidPage(
           title = "1. Summary",
           section_card(
             "1.1 Descriptive Statistics",
-            p("These descriptive statistics concern the achieved scores."),
             DT::dataTableOutput("descriptives")
           ),
           section_card(
@@ -570,7 +570,6 @@ ui <- fluidPage(
           title = "2. Classical Assessment Analysis",
           section_card(
             "2.1 Assessment Statistics",
-            p("These statistics concern the overall assessment."),
             div(
               style = "padding: 0;",
               DT::dataTableOutput("test_stats")
@@ -578,7 +577,6 @@ ui <- fluidPage(
           ),
           section_card(
             "2.2 Item Statistics",
-            p("These statistics concern the individual items in the assessment."),
             DT::dataTableOutput("item_stats")
           ),
           section_card(
@@ -670,9 +668,9 @@ server <- function(input, output, session) {
     
     div(
       style = "line-height:1.2;",
-      div(tags$strong("Participants: "), participants),
-      div(tags$strong("Items: "), items),
-      div(tags$strong("Maximum possible score: "), maxscore)
+      div("Participants: ", participants),
+      div("Items: ", items),
+      div("Maximum possible score: ", maxscore)
     )
   })
   
