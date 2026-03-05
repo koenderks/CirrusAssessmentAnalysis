@@ -319,8 +319,10 @@ ui <- fluidPage(
     info     = "#0054A6",
     warning  = nyenrode_gold,
     danger   = nyenrode_red,
-    base_font    = font_google("Open Sans"),
-    heading_font = font_google("Montserrat"),
+    # base_font    = font_google("Open Sans"),
+    # heading_font = font_google("Montserrat"),
+    base_font    = "Arial, Helvetica, sans-serif",
+    heading_font = "Arial, Helvetica, sans-serif",
     "font-size-base" = "1rem"
   ) |>
     bs_add_rules(rules = sprintf("
