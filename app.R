@@ -9,7 +9,6 @@ library(shinycssloaders)
 library(shinyjs)
 library(knitr)
 library(kableExtra)
-library(curl)
 
 # ---------------------------
 # Brand colors & ggplot theme
@@ -632,10 +631,14 @@ server <- function(input, output, session) {
     content = function(file) {
       withProgress(message = "Generating report...", value = 0, {
         
-        # Step 1: Copy the Rmd template
-        incProgress(0.3, detail = "Copying template...")
+        # Step 1: Download the Rmd template from GitHub
+        incProgress(0.3, detail = "Fetching template...")
         tempReport <- file.path(tempdir(), "report.Rmd")
-        file.copy("report.Rmd", tempReport, overwrite = TRUE)
+        download.file(
+          url = "https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/report.Rmd",
+          destfile = tempReport,
+          mode = "wb"  # binary mode is safe for Windows
+        )
         
         # Step 2: Render HTML
         incProgress(0.3, detail = "Rendering HTML...")
