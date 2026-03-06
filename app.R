@@ -1,7 +1,6 @@
 library(shiny)
 library(readxl)
 library(ggplot2)
-library(psych)
 library(DT)
 library(bslib)
 library(shinydisconnect)
@@ -266,8 +265,8 @@ create_descriptives_table <- function(input, parsed) {
       mean = paste0(round(mean(totalScores), digits), " (", paste0(round(mean(totalScores) / maxScore * 100, digits), "%"), ")"),
       median = paste0(round(median(totalScores), digits), " (", paste0(round(median(totalScores) / maxScore * 100, digits), "%"), ")"),
       sd = round(sd(totalScores), digits),
-      skewness = round(psych::describe(totalScores)$skew, digits),
-      kurtosis = round(psych::describe(totalScores)$kurtosis, digits)
+      skewness = round(compute_skewness(totalScores), digits),
+      kurtosis = round(compute_kurtosis(totalScores), digits)
     )
   }
   
@@ -298,7 +297,7 @@ create_histogram <- function(input, parsed) {
     maxScore <- parsed()$maxScore
     xBreaks <- pretty(c(0, maxScore), min.n = 4)
     h <- hist(c(0, totalScores, maxScore), breaks = 30, plot = FALSE)
-    yBreaks <- pretty(c(0, h$counts * 1.5), min.n = 4)
+    yBreaks <- pretty(c(0, h$counts * 1.25), min.n = 4)
     p <- ggplot(data.frame(x = totalScores), aes(x = x)) +
       geom_histogram(bins = 30, color = "black", fill = "lightgray") +
       scale_x_continuous(name = "Achieved score", limits = c(-0.5, max(xBreaks) + 0.5), breaks = xBreaks) +
@@ -328,7 +327,7 @@ create_test_stats <- function(input, parsed) {
       cor(x, rowSums(d) - x, use = "pairwise.complete.obs")
     })
     # Cronbach alpha
-    alpha <- psych::alpha(d)$total$raw_alpha
+    alpha <- total_cronbach_alpha(d)
     tab <- round(data.frame(P = mean(P), RIT = mean(RIT), RIR = mean(RIR), alpha = alpha), digits)
   }
   colnames(tab) <- c("Average P", "Average RIT", "Average RIR", "Cronbach's alpha")
@@ -343,15 +342,6 @@ create_item_stats <- function(input, parsed) {
     d <- parsed()$data
     qm <- parsed()$maxPoints
     digits <- parsed()$digits
-    total_cronbach_alpha <- function(data) {
-      data <- na.omit(data)
-      k <- ncol(data)
-      if (k < 2) return(NA)
-      item_vars <- apply(data, 2, var)
-      total_var <- var(rowSums(data))
-      if (isTRUE(all.equal(total_var, 0))) return(NA)
-      (k / (k - 1)) * (1 - sum(item_vars) / total_var)
-    }
     item_total_cor <- function(data) {
       tot <- rowSums(data)
       sapply(data, function(x) cor(x, tot, use = "pairwise.complete.obs"))
@@ -453,6 +443,28 @@ create_corr_plot <- function(input, parsed) {
   return(p)
 }
 
+compute_skewness <- function(x) {
+  m <- mean(x)
+  s <- sd(x)
+  return(mean((x - m)^3) / s^3)
+}
+
+compute_kurtosis <- function(x) {
+  m <- mean(x)
+  s <- sd(x)
+  return(mean((x - m)^4) / s^4 - 3)
+}
+
+total_cronbach_alpha <- function(data) {
+  data <- na.omit(data)
+  k <- ncol(data)
+  if (k < 2) return(NA)
+  item_vars <- apply(data, 2, var)
+  total_var <- var(rowSums(data))
+  if (isTRUE(all.equal(total_var, 0))) return(NA)
+  (k / (k - 1)) * (1 - sum(item_vars) / total_var)
+}
+
 # ---------------------------
 # UI
 # ---------------------------
@@ -516,7 +528,7 @@ ui <- fluidPage(
 
     /* Spacing utilities */
     .mt-2 { margin-top: .5rem; } .mt-3 { margin-top: 1rem; } .mb-3 { margin-bottom: 1rem; }
-  ", nyenrode_blue, nyenrode_gold)),
+  ", nyenrode_blue)),
   
   # --- Title bar ---
   tags$div(class = "app-title-bar",
@@ -616,7 +628,7 @@ server <- function(input, output, session) {
   })
   
   # Parse & clean to your spec
-  parsed <- reactive({
+  parsed <- eventReactive(input$file, {
     req(rawData())
     
     validate(
@@ -628,7 +640,7 @@ server <- function(input, output, session) {
     digits <- 3
     
     # Filter only the scores
-    index_first_question <- which(!(dataset[1, ] %in% c("Vraag", "Question", NA)))
+    index_first_question <- which(!(dataset[1, ] %in% c("Vraag", "Question", NA)))[1]
     dataset <- dataset[, -c(1:(index_first_question - 1))]
     index_after_last_question <- which(dataset[4, ] == "Score")
     dataset <- dataset[, -c(index_after_last_question:ncol(dataset))]
@@ -652,7 +664,6 @@ server <- function(input, output, session) {
       test_name = input$name
     )
   })
-  parsed <- bindCache(parsed, input$file, cache = "session")
   
   output$dataset_info <- renderUI({
     
