@@ -482,15 +482,12 @@ ui <- fluidPage(
   # --- Visual theme (Bootstrap 5) ---
   theme = bslib::bs_theme(
     version = 5,
+    bootswatch = NULL,
     bg = "#FFFFFF",
     fg = "#1A1A1A",
     primary = nyenrode_blue,
     secondary = nyenrode_gold,
     info = "#0054A6",
-    warning = nyenrode_gold,
-    danger = nyenrode_red,
-    # base_font    = font_google("Open Sans"),
-    # heading_font = font_google("Montserrat"),
     base_font = "Arial, Helvetica, sans-serif",
     heading_font = "Arial, Helvetica, sans-serif",
     "font-size-base" = "1rem"
@@ -551,7 +548,7 @@ ui <- fluidPage(
         "IMPORTANT: OVERVIEW",
         uiOutput("dataset_info")
       ),
-      textInput("name", label = "Assessment", placeholder = "e.g., Management Accounting - Final Exam"),
+      textInput("name", label = "Assessment", placeholder = "e.g., Statistical Reasoning - Final Exam"),
       textInput("name_examiner", label = "Examiner", placeholder = "e.g., Eric Xaminer"),
       div(
         class = "mt-3",
