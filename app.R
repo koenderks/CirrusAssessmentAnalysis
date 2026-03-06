@@ -96,6 +96,18 @@ build_report_html <- function(
           .center_table td { text-align: center !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           img { max-width: 100%; display: block; margin: 10px auto; }
           .logo { text-align:center; margin-bottom:30px; }
+            /* ---------- PRINT LAYOUT (PDF) ---------- */
+           @page { size: A4;  margin: 20mm 18mm 20mm 18mm; }
+           @media print {
+             body {margin: 0; }
+             #report_container { width: 100%; }
+             h2 { page-break-before: auto; page-break-after: avoid;}
+             h3 { page-break-after: avoid; }
+             table { page-break-inside: avoid; }
+             img { page-break-inside: avoid; }
+             p { orphans: 3; widows: 3;}
+             footer { position: fixed; bottom: 10mm; left: 0; right: 0; text-align: center; font-size: 11px; color: #666;}
+           }
         "))
       ),
       tags$body(
