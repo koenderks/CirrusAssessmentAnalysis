@@ -77,64 +77,15 @@ build_report_html <- function(
       tags$head(
         tags$title("Assessment Report"),
         tags$style(HTML("
-          /* Remove extra body margin and center content */
-          body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #FFFFFF;
-          }
-
-          /* Container for centering content at 100% width */
-          #report_container {
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px 0;
-            text-align: justify;
-          }
-
+          body { margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background: #FFFFFF; }
+          #report_container { width: 90%; margin: 0 auto; padding: 20px 0; text-align: justify;}
           h1 { color: #00205B; text-align: left; margin-bottom: 20px; }
           h2, h3 { margin-top: 30px; margin-bottom: 15px; }
-
-          table {
-            border-collapse: collapse;
-            width: 100%;
-          }
-
-          /* First table: left-aligned */
-          .left_table th {
-            text-align: left !important;
-            vertical-align: middle !important;
-            color: #00205B !important;  /* header color */
-            background: #f4f6fb; /* keep light background */
-            border: 0.5px solid #ddd;
-            padding: 6px;
-          }
-
-          /* Other tables: centered */
-          .center_table th {
-            text-align: center !important;
-            vertical-align: middle !important;
-            color: #00205B !important;  /* header color */
-            background: #f4f6fb; /* keep light background */
-            border: 0.5px solid #ddd;
-            padding: 6px;
-          }
-
-          .left_table td {
-            text-align: left !important;
-            vertical-align: middle !important;
-            border: 0.5px solid #ddd;
-            padding: 6px;
-          }
-
-          .center_table td {
-            text-align: center !important;   /* center all cell contents */
-            vertical-align: middle !important;
-            border: 0.5px solid #ddd;
-            padding: 6px;
-          }
-
+          table { border-collapse: collapse; width: 100%; }
+          .left_table th { text-align: left !important; vertical-align: middle !important; color: #00205B !important; background: #f4f6fb; border: 0.5px solid #ddd; padding: 6px; }
+          .center_table th { text-align: center !important; vertical-align: middle !important; color: #00205B !important; background: #f4f6fb; border: 0.5px solid #ddd; padding: 6px; }
+          .left_table td { text-align: left !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
+          .center_table td { text-align: center !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           img { max-width: 100%; display: block; margin: 10px auto; }
           .logo { text-align:center; margin-bottom:30px; }
         "))
@@ -150,16 +101,15 @@ build_report_html <- function(
           p(sprintf("Report generated on %s by %s", format(Sys.time(), "%d-%m-%Y"), examiner)),
           tags$hr(),
 
-          # 1 Summary
           h2("1. Summary"),
-          h3("1.1 Descriptive statistics"),
+          h3("1.1 Descriptive Statistics"),
           p(sprintf(
-            "This assessment tested %s participants. They achieved an average score of %s, with a median score of %s. The standard deviation was %s, indicating %s among participants. The skewness of the score distribution is %s, suggesting the distribution is %s.",
+            "This assessment included %s participants. This table shows the descriptive statistics of the scores. The average indicates the general performance, the median shows the midpoint, the standard deviation indicates how spread out scores are, and the skewness reveals if most students scored high, low, or evenly. For this assessment, the average score was %s, while the median score was %s. The standard deviation of %s indicates %s. Finally, the skewness of %s tells us the distribution is %s.",
             participants, avg_score, median_score, sd_score, sd_text, skew, skew_text
           )),
           HTML(desc_tab),
           h3("1.2 Distribution of Achieved Scores"),
-          p(sprintf("The histogram shows the distribution of achieved scores. In this case, it shows that most students achieved scores in the %s range. Any peaks at extreme ends suggest possible ceiling or floor effects that may affect discrimination between students.", difficulty_range)),
+          p(sprintf("The histogram shows the distribution of achieved scores, which allows for visual identification of common score ranges and highlight if many students struggled or excelled. In this case, it shows that most students achieved scores in the %s range. Any peaks at extreme ends suggest possible ceiling or floor effects that may affect discrimination between students.", difficulty_range)),
           embed_plot(hist_plot, 7, 4),
 
           # 2 Classical Assessment Analysis
@@ -167,7 +117,7 @@ build_report_html <- function(
 
           # 2.1 Assessment Stats
           h3("2.1 Assessments Statistics"),
-          p(HTML("This table displays the key metrics for each overall assessment. The cells are colored according to the values prescribed in the <i>Guideline Assessment Analysis</i>.")),
+          p(HTML("This table displays the key evaluation metrics for the overall assessment. The cells are colored according to the values prescribed in the <i>Guideline Assessment Analysis</i>.")),
           tags$ul(
             tags$li(HTML("<b>Average P (Difficulty)</b>: Values near 0 indicate very difficult items, values near 1 indicate very easy items. Ideally, items are moderately difficult (0.3–0.8, green) to provide effective discrimination.")),
             tags$li(HTML("<b>Average RIT and RIR (Discrimination)</b>: These values measure how well the assessment between higher and lower scoring participants. Values below 0.2 (red) suggest poor discrimination; 0.2–0.3 (orange) indicate average discrimination; values above 0.3 (green) indicate good discrimination.")),
@@ -177,7 +127,7 @@ build_report_html <- function(
 
           # 2.2 Item Stats
           h3("2.2 Item Statistics"),
-          p(HTML("This table summarizes the key metrics for each individual item. The cells are colored according to the values prescribed in the <i>Guideline Assessment Analysis</i>.")),
+          p(HTML("This table summarizes the key evaluation metrics for each individual item in the assessment. The cells are colored according to the values prescribed in the <i>Guideline Assessment Analysis</i>.")),
           tags$ul(
             tags$li(HTML("<b>P (Item Difficulty)</b>: Values near 0 indicate very difficult items, near 1 indicate very easy items. Red = too hard/easy, Green = ideal difficulty.")),
             tags$li(HTML("<b>RIT (Item-Total Correlation)</b>: Measures correlation with total score. Red = low (<0.2), Orange = average (0.2–0.3), Green = strong (>0.3).")),
@@ -188,12 +138,12 @@ build_report_html <- function(
 
           # 2.3 Item Difficulty & Discrimination
           h3("2.3 Item Difficulty & Discrimination"),
-          p("The figure below plots item difficulty (P-values) against item discrimination (RIT). Items that are difficult and poorly discriminating may need revision, while easy items with high discrimination typically contribute positively to the assessment."),
+          p("This figure shows the item difficulty (P-values) against item discrimination (RIT). Items that are difficult and poorly discriminating may need revision, while easy items with high discrimination typically contribute positively to the assessment."),
           embed_plot(item_plot, 9, 5),
 
           # 2.4 Item Correlation Matrix
           h3("2.4 Item Correlation Matrix"),
-          p("The correlation matrix highlights relationships between items. Strong positive correlations (> 0.6) may indicate redundancy, while very low or negative correlations may suggest misalignment or potential errors. Items with unusual correlations should be reviewed to improve assessment quality."),
+          p("This heatmap shows correlations between items. Strong positive correlations (> 0.6) may indicate redundancy, while very low or negative correlations may suggest misalignment or potential errors. Items with unusual correlations should be reviewed to improve assessment quality."),
           embed_plot(corr_plot, 11, 11)
         )
       )
