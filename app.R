@@ -95,7 +95,6 @@ build_report_html <- function(
           .left_table td { text-align: left !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           .center_table td { text-align: center !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           img { max-width: 100%; display: block; margin: 10px auto; }
-          .logo { text-align:center; margin-bottom:30px; }
             /* ---------- PRINT LAYOUT (PDF) ---------- */
            @page { size: A4;  margin: 20mm 18mm 20mm 18mm; }
            @media print {
@@ -113,10 +112,6 @@ build_report_html <- function(
       tags$body(
         tags$div(
           id = "report_container",
-          tags$div(
-            class = "logo",
-            tags$img(src = "https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/logo.png", height = "80px")
-          ),
           h1(sprintf("Assessment Report: %s", name)),
           p(sprintf("Report generated on %s by %s", format(Sys.time(), "%d-%m-%Y"), examiner)),
           tags$hr(),
@@ -445,7 +440,7 @@ total_cronbach_alpha <- function(data) {
 # UI
 # ---------------------------
 ui <- fluidPage(
-  title = "Advanced Assessment Analysis",
+  title = "Psychometric Analysis of Cirrus Exports",
 
   # Session disconnect overlay
   shinydisconnect::disconnectMessage(
@@ -506,7 +501,7 @@ ui <- fluidPage(
   # --- Title bar ---
   tags$div(
     class = "app-title-bar",
-    tags$div(class = "app-title", "Advanced Assessment Analysis")
+    tags$div(class = "app-title", "Psychometric Analysis of Cirrus Exports")
   ),
 
   # --- Layout with persistent sidebar ---
@@ -580,10 +575,6 @@ ui <- fluidPage(
         )
       )
     )
-  ),
-  tags$footer(
-    class = "app-footer",
-    "© Nyenrode Business Universiteit"
   )
 )
 

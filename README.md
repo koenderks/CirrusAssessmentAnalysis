@@ -1,6 +1,6 @@
-# Advanced Assessment Analysis on Cirrus Exports
+# Psychometric Analysis of Cirrus Exports (PACE)
 
-Advanced Assessment Analysis is a Shiny application designed to generate detailed assessment reports based on data exported directly from the Cirrus online assessment platform. It enables educators and assessment designers to explore test data, visualize score distributions, examine item and test statistics, and create professional HTML reports. Built in R using `shiny` and hosted on GitHub Pages via `shinylive`, all computations run locally, ensuring that sensitive data never leaves your computer.
+PACE is a Shiny application designed to generate psychometric reports of educational tests based on data exported directly from the Cirrus online assessment platform. It enables educators and assessment designers to explore test data, visualize score distributions, examine item and test statistics, and create professional HTML reports. Built in R using `shiny` and hosted on GitHub Pages via `shinylive`, all computations run locally, ensuring that sensitive data never leaves your computer.
 
 ---
 
@@ -18,7 +18,7 @@ Advanced Assessment Analysis is a Shiny application designed to generate detaile
 
 ## Getting Started
 
-Access the live application at https://koenderks.github.io/CirrusAssessmentAnalysis/.
+Access the live application at https://koenderks.github.io/PACE/.
 
 ## Contributing
 
