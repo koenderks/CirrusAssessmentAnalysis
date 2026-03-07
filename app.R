@@ -21,6 +21,7 @@ downloadButton <- function(...) {
 build_report_html <- function(
   name,
   examiner,
+  examdate,
   descriptives,
   hist_plot,
   test_stats,
@@ -107,9 +108,9 @@ build_report_html <- function(
           h1 { color: #00205B; text-align: left; margin-bottom: 20px; }
           h2, h3 { margin-top: 30px; margin-bottom: 15px; }
           table { border-collapse: collapse; width: 100%; }
-          .left_table th { text-align: left !important; vertical-align: middle !important; color: #00205B !important; background: #f4f6fb; border: 0.5px solid #ddd; padding: 6px; }
+          .left_table th { white-space: nowrap; text-align: left !important; vertical-align: middle !important; color: #00205B !important; background: #f4f6fb; border: 0.5px solid #ddd; padding: 6px; }
           .center_table th { text-align: center !important; vertical-align: middle !important; color: #00205B !important; background: #f4f6fb; border: 0.5px solid #ddd; padding: 6px; }
-          .left_table td { text-align: left !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
+          .left_table td { text-align: justify !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           .center_table td { text-align: center !important; vertical-align: middle !important; border: 0.5px solid #ddd; padding: 6px; }
           img { max-width: 100%; display: block; margin: 10px auto; }
             /* ---------- PRINT LAYOUT (PDF) ---------- */
@@ -129,8 +130,8 @@ build_report_html <- function(
       tags$body(
         tags$div(
           id = "report_container",
-          h1(sprintf("Psychometric report for %s", if (name == "") "....." else name)),
-          p(sprintf("Report generated on %s by %s", format(Sys.time(), "%d-%m-%Y"), if (examiner == "") "....." else examiner)),
+          h1(sprintf("Psychometric Report: %s of %s", if (name == "") "....." else name, format(examdate, "%d-%m-%Y"))),
+          p(sprintf("Generated on %s by %s", format(Sys.time(), "%d-%m-%Y"), if (examiner == "") "....." else examiner)),
           tags$hr(),
           h2("1. Summary"),
           p("This section provides an overview of the assessment results and key characteristics of the score distribution."),
@@ -570,6 +571,7 @@ create_flagged_items <- function(input, parsed) {
       )
     }
   }
+  colnames(tab) <- c("Item (Cirrus ID)", "Issue", "Explanation")
   return(tab)
 }
 
@@ -656,8 +658,8 @@ ui <- fluidPage(
     .card-subtitle { color: #6c757d; font-weight: 500; }
 
     /* DataTables polish */
-    table.dataTable thead th { background: #f4f6fb; color: #24324a; font-weight: 700; }
-    table.dataTable tbody tr:nth-child(odd) { background-color: #fbfcff; }
+    table.dataTable thead th { min-width: max-content; background: #f4f6fb; color: #24324a; font-weight: 700; }
+    table.dataTable tbody tr:nth-child(odd) { min-width: max-content; background-color: #fbfcff; }
     table.dataTable tbody tr:hover { background-color: #f5f8ff; }
 
     /* Spacing utilities */
@@ -687,7 +689,8 @@ ui <- fluidPage(
         "IMPORTANT: QUICK OVERVIEW",
         uiOutput("dataset_info")
       ),
-      textInput("name", label = "Assessment", placeholder = "e.g., Statistical Reasoning - Final Exam"),
+      textInput("name", label = "Assessment name", placeholder = "e.g., Statistical Reasoning - Final Exam"),
+      dateInput("date", label = "Assessment date", format = "dd-mm-yyyy", weekstart = 1),
       textInput("name_examiner", label = "Examiner", placeholder = "e.g., Eric Xaminer"),
       div(
         class = "mt-3",
@@ -742,7 +745,7 @@ ui <- fluidPage(
           )
         ),
         tabPanel(
-          title = "3. Flagged Items",
+          title = "3. Flagged Items for Review",
           br(),
           DT::dataTableOutput("flagged_items")
         )
@@ -813,8 +816,7 @@ server <- function(input, output, session) {
       maxPoints = questionMaxPoints,
       maxScore = maxScore,
       questionNames = questionNames,
-      digits = digits,
-      test_name = input$name
+      digits = digits
     )
   })
 
@@ -966,6 +968,7 @@ server <- function(input, output, session) {
         report <- build_report_html(
           input$name,
           input$name_examiner,
+          input$date,
           descriptives_react(),
           histogram_react(),
           test_stats_react(),
