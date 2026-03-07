@@ -26,7 +26,11 @@ build_report_html <- function(
   test_stats,
   item_stats,
   item_plot,
-  corr_plot
+  difficulty_plot,
+  discrimination_plot,
+  corr_plot,
+  high_corr_items,
+  flagged_items
 ) {
   # ----- helper: embed plot in HTML -----
   embed_plot <- function(plot, width, height) {
@@ -78,11 +82,25 @@ build_report_html <- function(
   item_tab <- knitr::kable(item_tab, escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
     kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
 
+  # Correlation table
+  high_corr_items_positive <- high_corr_items[high_corr_items$Correlation > 0, ]
+  high_corr_items_positive <- high_corr_items_positive[order(-high_corr_items_positive$Correlation), ]
+  high_corr_items_negative <- high_corr_items[high_corr_items$Correlation < 0, ]
+  high_corr_items_negative <- high_corr_items_negative[order(high_corr_items_negative$Correlation), ]
+  corr_tab <- rbind(head(high_corr_items_positive, 5), head(high_corr_items_negative, 5))
+  corr_tab$Correlation <- kableExtra::cell_spec(corr_tab$Correlation, "html", color = ifelse(corr_tab$Correlation < 0, "tomato", ifelse(corr_tab$Correlation < 0.6, "forestgreen", "tomato")))
+  corr_tab <- knitr::kable(corr_tab, escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
+    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+
+  # Flagged items table
+  flagged_tab <- knitr::kable(flagged_items, row.names = FALSE, format = "html", table.attr = 'class="left_table"') |>
+    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+
   # ----- Build HTML -----
   tagList(
     tags$html(
       tags$head(
-        tags$title("Assessment Report"),
+        tags$title("Psychometric Report"),
         tags$style(HTML("
           body { margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background: #FFFFFF; }
           #report_container { width: 90%; margin: 0 auto; padding: 20px 0; text-align: justify;}
@@ -153,20 +171,36 @@ build_report_html <- function(
             tags$li(p(HTML("<i>Alpha-if-deleted</i>: This statistic indicates the change in Cronbach’s alpha if the item were removed from the assessment. An increase in alpha (red) suggests that the item may reduce internal consistency.")))
           ),
           HTML(item_tab),
-          h3("2.3 Item Difficulty & Discrimination"),
           p("The plot below displays item difficulty (P-value) in relation to item discrimination (RIT)."),
           tags$ul(
             tags$li(p("Items that are very easy or very difficult and show low discrimination may provide limited measurement information and may warrant revision.")),
             tags$li(p("Items with moderate difficulty and strong discrimination generally contribute most effectively to reliable measurement."))
           ),
           embed_plot(item_plot, 9, 5),
-          h3("2.4 Item Correlation Matrix"),
+          p("The item difficulty (P-value) and item discrimination (RIT) are shown again in the figures below, with colored thresholds for quality assessment."),
+          tags$div(
+            style = "display:flex; gap:30px; margin-top:20px;",
+            tags$div(
+              style = "flex:1;",
+              embed_plot(difficulty_plot, 4.5, 3)
+            ),
+            tags$div(
+              style = "flex:1;",
+              embed_plot(discrimination_plot, 4.5, 3)
+            )
+          ),
+          h3("2.3 Item Correlations"),
           p("This heatmap below shows correlations between all assessment items."),
           tags$ul(
-            tags$li(p("Items showing strong positive correlations may measure very similar content and should be reviewed for potential redundancy.")),
+            tags$li(p("Items showing strong positive correlations (>0.6) may measure very similar content and should be reviewed for potential redundancy.")),
             tags$li(p("Items with negative correlations with multiple other items should be reviewed for potential scoring errors or content misalignment."))
           ),
-          embed_plot(corr_plot, 11, 11)
+          embed_plot(corr_plot, 11, 11),
+          p("The table below below shows the five strongest positive and five strongest negative correlations. Red values indicate extremely strong correlations (>0.6) and negative correlations."),
+          HTML(corr_tab),
+          h2("3. Flagged Items for Review"),
+          p("The table below summarizes items that may require review due to psychometric concerns. Each flagged item is listed with the specific issue(s) detected and an explanation for why it may warrant attention. The table is ordered so that items with the greatest number of issues are shown first."),
+          HTML(flagged_tab)
         )
       )
     )
@@ -267,18 +301,17 @@ create_histogram <- function(input, parsed) {
     totalScores <- rowSums(d)
     maxScore <- parsed()$maxScore
     xBreaks <- pretty(c(0, maxScore), min.n = 4)
-    xLabels <- paste0(xBreaks, " (", round(xBreaks / maxScore * 100, 2) ,"%)")
-    h <- hist(c(0, totalScores, maxScore), breaks = 30, plot = FALSE)
-    yBreaks <- pretty(c(0, h$counts * 1.25), min.n = 4)
+    xLabels <- paste0(xBreaks, " (", round(xBreaks / maxScore * 100, 2), "%)")
     p <- ggplot2::ggplot(data.frame(x = totalScores), ggplot2::aes(x = x)) +
       ggplot2::geom_histogram(bins = 30, color = "black", fill = "lightgray") +
       ggplot2::scale_x_continuous(name = "Achieved score", limits = c(-0.5, max(xBreaks) + 0.5), breaks = xBreaks, labels = xLabels) +
-      ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, max(yBreaks)), breaks = yBreaks) +
       ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 0, xend = max(xBreaks)) +
+      theme_nyenrode()
+    yBreaks <- pretty(c(0, max(ggplot2::ggplot_build(p)$data[[1]]$count)), min.n = 4)
+    p <- p + ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, max(yBreaks)), breaks = yBreaks) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
       ggplot2::geom_segment(x = maxScore, xend = maxScore, y = 0, yend = max(yBreaks), linetype = "dashed", color = "firebrick") +
-      ggplot2::annotate(geom = "text", x = maxScore, y = max(yBreaks), label = "Max. score", hjust = 1.2, size = 5, color = "firebrick") +
-      theme_nyenrode()
+      ggplot2::annotate(geom = "text", x = maxScore, y = max(yBreaks), label = "Max. score", hjust = 1.2, size = 5, color = "firebrick")
   }
   return(p)
 }
@@ -289,18 +322,8 @@ create_test_stats <- function(input, parsed) {
   } else {
     req(parsed())
     d <- parsed()$data
-    qm <- parsed()$maxPoints
     digits <- parsed()$digits
-    # Item metrics
-    P <- colMeans(d) / qm
-    RIT <- sapply(d, function(x) cor(x, rowSums(d), use = "pairwise.complete.obs"))
-    RIR <- sapply(seq_along(d), function(j) {
-      x <- d[[j]]
-      cor(x, rowSums(d) - x, use = "pairwise.complete.obs")
-    })
-    # Cronbach alpha
-    alpha <- total_cronbach_alpha(d)
-    tab <- round(data.frame(P = mean(P), RIT = mean(RIT), RIR = mean(RIR), alpha = alpha), digits)
+    tab <- round(data.frame(P = mean(parsed()$P), RIT = mean(parsed()$RIT), RIR = mean(parsed()$RIR), alpha = total_cronbach_alpha(d)), digits)
   }
   colnames(tab) <- c("Average P", "Average RIT", "Average RIR", "Cronbach's alpha")
   return(tab)
@@ -312,32 +335,15 @@ create_item_stats <- function(input, parsed) {
   } else {
     req(parsed())
     d <- parsed()$data
-    qm <- parsed()$maxPoints
     digits <- parsed()$digits
-    item_total_cor <- function(data) {
-      tot <- rowSums(data)
-      sapply(data, function(x) cor(x, tot, use = "pairwise.complete.obs"))
-    }
-    item_rest_cor <- function(data) {
-      tot <- rowSums(data)
-      sapply(seq_along(data), function(j) {
-        x <- data[[j]]
-        cor(x, tot - x, use = "pairwise.complete.obs")
-      })
-    }
-    RIT <- item_total_cor(d)
-    RIR <- item_rest_cor(d)
-    alpha_drop <- sapply(seq_along(d), function(j) {
-      total_cronbach_alpha(d[, -j, drop = FALSE])
-    })
     tab <- data.frame(
       item = colnames(d),
       mean = round(colMeans(d), digits),
       sd = round(apply(d, 2, sd), digits),
-      P = round(colMeans(d) / qm, digits),
-      RIT = round(RIT, digits),
-      RIR = round(RIR, digits),
-      alpha_when_dropped = round(alpha_drop, digits)
+      P = round(parsed()$P, digits),
+      RIT = round(parsed()$RIT, digits),
+      RIR = round(parsed()$RIR, digits),
+      alpha_when_dropped = round(parsed()$alpha_drop, digits)
     )
   }
   colnames(tab) <- c("Item (Cirrus ID)", "Mean", "SD", "P", "RIT", "RIR", "Alpha-if-deleted")
@@ -356,11 +362,8 @@ create_item_plot <- function(input, parsed) {
       ggplot2::theme(axis.text = ggplot2::element_blank())
   } else {
     req(parsed())
-    d <- parsed()$data
-    qm <- parsed()$maxPoints
-    digits <- parsed()$digits
-    RIT <- sapply(d, function(x) cor(x, rowSums(d), use = "pairwise.complete.obs"))
-    Pval <- colMeans(d) / qm
+    RIT <- parsed()$RIT
+    Pval <- parsed()$P
     df <- data.frame(item = factor(names(Pval), levels = names(Pval)[order(Pval)]), P = Pval, RIT = RIT)
     df_long <- stats::reshape(df, varying = list(c("P", "RIT")), v.names = "value", timevar = "metric", times = c("P", "RIT"), direction = "long")
     yBreaks <- pretty(c(0, 1, df_long$value), min.n = 4)
@@ -370,9 +373,68 @@ create_item_plot <- function(input, parsed) {
       ggplot2::scale_y_continuous(name = NULL, limits = c(min(yBreaks), max(yBreaks)), breaks = yBreaks) +
       ggplot2::scale_x_discrete(name = "Item (Cirrus ID)") +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
-      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 1, xend = ncol(d)) +
+      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 1, xend = nrow(df)) +
       theme_nyenrode() +
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), legend.position = "top")
+  }
+  return(p)
+}
+
+create_difficulty_distribution <- function(input, parsed) {
+  if (is.null(input$file)) {
+    p <- ggplot2::ggplot(data.frame(x = 1), ggplot2::aes(x = x)) +
+      ggplot2::geom_histogram() +
+      ggplot2::scale_x_continuous(name = "Achieved score", limits = c(0, 1)) +
+      ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, 1)) +
+      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 0, xend = 1) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = 1) +
+      theme_nyenrode() +
+      ggplot2::theme(axis.text = ggplot2::element_blank())
+  } else {
+    req(parsed())
+    P <- parsed()$P
+    p <- ggplot2::ggplot(data.frame(x = P), ggplot2::aes(x = x)) +
+      ggplot2::geom_histogram(bins = 30, color = "black", fill = nyenrode_gold) +
+      ggplot2::scale_x_continuous(name = "P (Difficulty)", limits = c(-0.05, 1.05), breaks = seq(0, 1, 0.2)) +
+      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 0, xend = 1) +
+      theme_nyenrode()
+    yBreaks <- pretty(c(0, max(ggplot2::ggplot_build(p)$data[[1]]$count)), min.n = 4)
+    p <- p + ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, max(yBreaks)), breaks = yBreaks) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+      ggplot2::annotate(geom = "rect", xmin = 0, xmax = 0.2, ymin = 0, ymax = max(yBreaks), fill = "tomato", alpha = 0.25, color = NA) +
+      ggplot2::annotate(geom = "rect", xmin = 0.2, xmax = 0.8, ymin = 0, ymax = max(yBreaks), fill = "forestgreen", alpha = 0.25, color = NA) +
+      ggplot2::annotate(geom = "rect", xmin = 0.8, xmax = 1, ymin = 0, ymax = max(yBreaks), fill = "tomato", alpha = 0.25, color = NA) +
+      ggplot2::geom_histogram(bins = 30, color = "black", fill = nyenrode_gold)
+  }
+  return(p)
+}
+
+create_discrimination_distribution <- function(input, parsed) {
+  if (is.null(input$file)) {
+    p <- ggplot2::ggplot(data.frame(x = 1), ggplot2::aes(x = x)) +
+      ggplot2::geom_histogram() +
+      ggplot2::scale_x_continuous(name = "Achieved score", limits = c(0, 1)) +
+      ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, 1)) +
+      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 0, xend = 1) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = 1) +
+      theme_nyenrode() +
+      ggplot2::theme(axis.text = ggplot2::element_blank())
+  } else {
+    req(parsed())
+    RIT <- parsed()$RIT
+    xBreaks <- pretty(c(0, 1, RIT), min.n = 4)
+    p <- ggplot2::ggplot(data.frame(x = RIT), ggplot2::aes(x = x)) +
+      ggplot2::geom_histogram(bins = 30, color = "black", fill = nyenrode_blue2) +
+      ggplot2::scale_x_continuous(name = "RIT (Discrimination)", limits = c(min(xBreaks) - 0.05, max(xBreaks) + 0.05), breaks = xBreaks) +
+      ggplot2::geom_segment(y = -Inf, yend = -Inf, x = 0, xend = 1) +
+      theme_nyenrode()
+    yBreaks <- pretty(c(0, max(ggplot2::ggplot_build(p)$data[[1]]$count)), min.n = 4)
+    p <- p + ggplot2::scale_y_continuous(name = "Frequency", limits = c(0, max(yBreaks)), breaks = yBreaks) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+      ggplot2::annotate(geom = "rect", xmin = min(xBreaks), xmax = 0.2, ymin = 0, ymax = max(yBreaks), fill = "tomato", alpha = 0.25, color = NA) +
+      ggplot2::annotate(geom = "rect", xmin = 0.2, xmax = 0.3, ymin = 0, ymax = max(yBreaks), fill = "orange", alpha = 0.25, color = NA) +
+      ggplot2::annotate(geom = "rect", xmin = 0.3, xmax = max(xBreaks), ymin = 0, ymax = max(yBreaks), fill = "forestgreen", alpha = 0.25, color = NA) +
+      ggplot2::geom_histogram(bins = 30, color = "black", fill = nyenrode_blue2)
   }
   return(p)
 }
@@ -389,8 +451,7 @@ create_corr_plot <- function(input, parsed) {
       ggplot2::theme(axis.text = ggplot2::element_blank())
   } else {
     req(parsed())
-    d <- parsed()$data
-    cor_mat <- cor(d, use = "pairwise.complete.obs")
+    cor_mat <- parsed()$correlations
     diag(cor_mat) <- NA
     cor_df <- as.data.frame(as.table(cor_mat))
     colnames(cor_df) <- c("Var1", "Var2", "Correlation")
@@ -399,7 +460,7 @@ create_corr_plot <- function(input, parsed) {
     col_breaks <- pretty(c(-1, 1), min.n = 5)
     p <- ggplot2::ggplot(cor_df, ggplot2::aes(x = Var1, y = Var2, fill = Correlation)) +
       ggplot2::geom_tile(color = "black") +
-      ggplot2::scale_fill_gradient2(name = NULL, low = "firebrick", mid = "white", high = "forestgreen", na.value = "black", midpoint = 0, limits = c(-1, 1), breaks = col_breaks) +
+      ggplot2::scale_fill_gradient2(name = NULL, low = "tomato", mid = "white", high = "forestgreen", na.value = "black", midpoint = 0, limits = c(-1, 1), breaks = col_breaks) +
       ggplot2::scale_x_discrete(name = "Item (Cirrus ID)", breaks = xBreaks) +
       ggplot2::scale_y_discrete(name = "Item (Cirrus ID)", breaks = yBreaks) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 1, yend = length(yBreaks)) +
@@ -408,6 +469,102 @@ create_corr_plot <- function(input, parsed) {
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), legend.position = "top", legend.key.width = ggplot2::unit(4, "cm"))
   }
   return(p)
+}
+
+create_high_cor_items <- function(input, parsed) {
+  if (is.null(input$file)) {
+    tab <- data.frame(item1 = NA, item2 = NA, cor = NA)
+  } else {
+    req(parsed())
+    cor_mat <- parsed()$correlations
+    cor_mat[lower.tri(cor_mat, diag = TRUE)] <- NA
+    df <- na.omit(as.data.frame(as.table(cor_mat)))
+    colnames(df) <- c("Item1", "Item2", "Correlation")
+    tab <- df[order(-abs(df$Correlation)), ]
+  }
+  colnames(tab) <- c("Item (Cirrus ID)", "Item (Cirrus ID)", "Correlation")
+  tab$Correlation <- round(tab$Correlation, 3)
+  return(tab)
+}
+
+create_flagged_items <- function(input, parsed) {
+  if (is.null(input$file)) {
+    tab <- data.frame(Item = NA, Issue = NA, Explanation = NA)
+  } else {
+    req(parsed())
+    item_stats <- create_item_stats(input, parsed)
+    test_stats <- create_test_stats(input, parsed)
+    alpha_test <- test_stats$`Cronbach's alpha`[1]
+    flagged <- list()
+    for (i in 1:nrow(item_stats)) {
+      item <- item_stats$`Item (Cirrus ID)`[i]
+      P <- item_stats$P[i]
+      RIT <- item_stats$RIT[i]
+      RIR <- item_stats$RIR[i]
+      alpha_drop <- item_stats$`Alpha-if-deleted`[i]
+      issues <- c()
+      explanations <- c()
+      if (P < 0.2) {
+        issues <- c(issues, "Very difficult item")
+        explanations <- c(explanations,
+                          "Less than 20% of participants answered correctly, suggesting the item may be ambiguous, miskeyed, or cover material not sufficiently taught."
+        )
+      }
+      if (P > 0.8) {
+        issues <- c(issues, "Very easy item")
+        explanations <- c(explanations,
+                          "More than 80% of participants answered correctly, meaning the item provides limited discrimination between participants."
+        )
+      }
+      if (RIT < 0) {
+        issues <- c(issues, "Negative discrimination")
+        explanations <- c(explanations,
+                          "Item-total correlation is negative, indicating that lower-performing participants answered correctly more often than higher-performing participants."
+        )
+      }
+      if (RIT >= 0 & RIT < 0.2) {
+        issues <- c(issues, "Low discrimination")
+        explanations <- c(explanations,
+                          "Item-total correlation is below 0.20, indicating weak ability to distinguish between stronger and weaker participants."
+        )
+      }
+      if (alpha_drop > alpha_test) {
+        issues <- c(issues, "Reduces test reliability")
+        explanations <- c(explanations,
+                          "Cronbach’s alpha increases when this item is removed, suggesting the item may not align well with the construct measured by the assessment."
+        )
+      }
+      if (RIR < 0) {
+        issues <- c(issues, "Negative item-rest correlation")
+        explanations <- c(explanations,
+                          "The item correlates negatively with the rest of the assessment, suggesting potential scoring errors or content misalignment."
+        )
+      }
+      if (length(issues) > 0) {
+        flagged[[length(flagged)+1]] <- data.frame(
+          Item = item,
+          Issue = paste(unique(issues), collapse = "; "),
+          Explanation = paste(unique(explanations), collapse = " "),
+          NumIssues = length(issues),
+          stringsAsFactors = FALSE
+        )
+      }
+    }
+    tab <- do.call(rbind, flagged)
+    if (!is.null(tab) && nrow(tab) > 0) {
+      # Order by number of issues descending
+      tab <- tab[order(-tab$NumIssues), ]
+      tab$NumIssues <- NULL  # remove helper column
+    } else {
+      tab <- data.frame(
+        Item = "None",
+        Issue = "No flagged items",
+        Explanation = "All items fall within recommended psychometric thresholds.",
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  return(tab)
 }
 
 compute_skewness <- function(x) {
@@ -440,7 +597,10 @@ total_cronbach_alpha <- function(data) {
 # UI
 # ---------------------------
 ui <- fluidPage(
-  title = "Psychometric Analysis of Cirrus Exports",
+  title = "PACED",
+  tags$head(
+    tags$title("PACED")
+  ),
 
   # Session disconnect overlay
   shinydisconnect::disconnectMessage(
@@ -501,20 +661,20 @@ ui <- fluidPage(
   # --- Title bar ---
   tags$div(
     class = "app-title-bar",
-    tags$div(class = "app-title", "Psychometric Analysis of Cirrus Exports")
+    tags$div(class = "app-title", "Psychometric Analysis of Cirrus Exported Data (PACED)")
   ),
 
   # --- Layout with persistent sidebar ---
   sidebarLayout(
     sidebarPanel(
       class = "sidebar",
-      h2("Instructions"),
+      h2(HTML("<b>Instructions</b>")),
       tags$ol(
         tags$li("Go to Cirrus → Reports"),
-        tags$li(HTML('Select the test and export "Candidate scores - with criterum scores" (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.xlsx" target="_blank"><u>here</u></a> for an example file).')),
+        tags$li(HTML('Select the test and export "Candidate scores - with criterum scores" (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.xlsx" target="_blank"><u>here</u></a> for an example file)')),
         tags$li("Upload the exported file below and check overview"),
         tags$li('Review results in tabs and click "Download Report" for interpretations in HTML-format'),
-        tags$li('Right-click and "Print Page" and select PDF')
+        tags$li(HTML('Right-click and "Print Page" and select PDF (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.pdf" target="_blank"><u>here</u></a> for an example report)'))
       ),
       fileInput("file", HTML("<b>Upload candidate scores (.xlsx from Cirrus)</b>"), accept = ".xlsx", buttonLabel = HTML("<b>Browse...</b>")),
       section_card(
@@ -556,22 +716,29 @@ ui <- fluidPage(
           ),
           section_card(
             "2.2 Item Statistics",
-            DT::dataTableOutput("item_stats")
-          ),
-          section_card(
-            "2.3 Item Difficulty & Discrimination",
+            DT::dataTableOutput("item_stats"),
             div(
               style = "width: 100%; margin: 0 auto;",
-              plotOutput("item_plot", width = "100%")
+              plotOutput("item_plot", width = "100%"),
+              fluidRow(
+                column(6, plotOutput("difficulty_dist", width = "100%")),
+                column(6, plotOutput("discrimination_dist", width = "100%"))
+              )
             )
           ),
           section_card(
-            "2.4 Item Correlation Matrix",
+            "2.3 Item Correlations",
             div(
               style = "width: 100%; margin: 0 auto;",
-              plotOutput("corr_plot", width = "100%", height = "1000px")
-            )
+              plotOutput("corr_plot", width = "100%", height = "1000px"),
+              DT::dataTableOutput("high_cor_items")
+            ),
           )
+        ),
+        tabPanel(
+          title = "3. Flagged Items",
+          br(),
+          DT::dataTableOutput("flagged_items")
         )
       )
     )
@@ -619,9 +786,24 @@ server <- function(input, output, session) {
     dataset <- dataset[complete.cases(dataset), ]
     colnames(dataset) <- questionNames
     dataset <- as.data.frame(apply(dataset, 2, as.numeric))
+    correlations <- cor(dataset, use = "pairwise.complete.obs")
+    P <- colMeans(dataset) / questionMaxPoints
+    RIT <- sapply(dataset, function(x) cor(x, rowSums(dataset), use = "pairwise.complete.obs"))
+    RIR <- sapply(seq_along(dataset), function(j) {
+      x <- dataset[[j]]
+      cor(x, rowSums(dataset) - x, use = "pairwise.complete.obs")
+    })
+    alpha_drop <- sapply(seq_along(dataset), function(j) {
+      total_cronbach_alpha(dataset[, -j, drop = FALSE])
+    })
 
     list(
       data = dataset,
+      correlations = correlations,
+      P = P,
+      RIT = RIT,
+      RIR = RIR,
+      alpha_drop = alpha_drop,
       maxPoints = questionMaxPoints,
       maxScore = maxScore,
       questionNames = questionNames,
@@ -649,8 +831,19 @@ server <- function(input, output, session) {
     )
   })
 
-  # Descriptives (reactive + UI)
+  # Computations
   descriptives_react <- reactive(create_descriptives_table(input, parsed))
+  histogram_react <- reactive(create_histogram(input, parsed))
+  test_stats_react <- reactive(create_test_stats(input, parsed))
+  item_stats_react <- reactive(create_item_stats(input, parsed))
+  item_plot_react <- reactive(create_item_plot(input, parsed))
+  difficulty_dist_react <- reactive(create_difficulty_distribution(input, parsed))
+  discrimination_dist_react <- reactive(create_discrimination_distribution(input, parsed))
+  corr_plot_react <- reactive(create_corr_plot(input, parsed))
+  high_cor_items_react <- reactive(create_high_cor_items(input, parsed))
+  flagged_items_react <- reactive(create_flagged_items(input, parsed))
+
+  # Output
   output$descriptives <- DT::renderDataTable({
     DT::datatable(
       descriptives_react(),
@@ -659,13 +852,7 @@ server <- function(input, output, session) {
       class = "stripe hover order-column compact row-border"
     )
   })
-
-  # Histogram
-  histogram_react <- reactive(create_histogram(input, parsed))
   output$histogram <- renderPlot(histogram_react())
-
-  # Test stats
-  test_stats_react <- reactive(create_test_stats(input, parsed))
   output$test_stats <- DT::renderDataTable({
     DT::datatable(
       test_stats_react(),
@@ -709,9 +896,6 @@ server <- function(input, output, session) {
         )
       )
   })
-
-  # Item stats
-  item_stats_react <- reactive(create_item_stats(input, parsed))
   output$item_stats <- DT::renderDataTable({
     DT::datatable(
       item_stats_react(),
@@ -748,14 +932,22 @@ server <- function(input, output, session) {
         )
       )
   })
-
-  # Item plot
-  item_plot_react <- reactive(create_item_plot(input, parsed))
   output$item_plot <- renderPlot(item_plot_react())
-
-  # Correlation heatmap
-  corr_plot_react <- reactive(create_corr_plot(input, parsed))
+  output$difficulty_dist <- renderPlot(difficulty_dist_react())
+  output$discrimination_dist <- renderPlot(discrimination_dist_react())
   output$corr_plot <- renderPlot(corr_plot_react())
+  output$high_cor_items <- DT::renderDataTable({
+    DT::datatable(high_cor_items_react(), rownames = FALSE, options = list(pageLength = 5, autoWidth = TRUE), class = "stripe hover order-column compact row-border") |>
+      DT::formatStyle("Correlation", color = DT::styleInterval(c(0, 0.6), c("tomato", "forestgreen", "tomato")))
+  })
+  output$flagged_items <- DT::renderDataTable({
+    DT::datatable(
+      flagged_items_react(),
+      rownames = FALSE,
+      options = list(pageLength = 10, autoWidth = TRUE),
+      class = "stripe hover order-column compact row-border"
+    )
+  })
 
   # Export (HTML report via R Markdown template)
   output$export <- downloadHandler(
@@ -773,7 +965,11 @@ server <- function(input, output, session) {
           test_stats_react(),
           item_stats_react(),
           item_plot_react(),
-          corr_plot_react()
+          difficulty_dist_react(),
+          discrimination_dist_react(),
+          corr_plot_react(),
+          high_cor_items_react(),
+          flagged_items_react()
         )
 
         # Step 2: Render HTML

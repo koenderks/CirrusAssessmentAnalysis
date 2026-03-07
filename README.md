@@ -1,6 +1,6 @@
-# Psychometric Analysis of Cirrus Exports (PACE)
+# Psychometric Analysis of Cirrus Exported Data (PACED)
 
-PACE is a Shiny application designed to generate psychometric reports of educational tests based on data exported directly from the Cirrus online assessment platform. It enables educators and assessment designers to explore test data, visualize score distributions, examine item and test statistics, and create professional HTML reports. Built in R using `shiny` and hosted on GitHub Pages via `shinylive`, all computations run locally, ensuring that sensitive data never leaves your computer.
+PACED is a Shiny application designed to generate psychometric reports of educational tests based on data exported directly from the Cirrus online assessment platform. It enables educators and assessment designers to explore test data, visualize score distributions, examine item and test statistics, and create professional HTML reports. Built in R using `shiny` and hosted on GitHub Pages via `shinylive`, all computations run locally, ensuring that sensitive data never leaves your computer.
 
 ---
 
@@ -18,7 +18,7 @@ PACE is a Shiny application designed to generate psychometric reports of educati
 
 ## Getting Started
 
-Access the live application at https://koenderks.github.io/PACE/.
+Access the live application at https://koenderks.github.io/PACED/.
 
 ## Contributing
 
