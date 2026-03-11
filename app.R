@@ -76,7 +76,7 @@ i18n <- list(
     upload_label_html = "<b>Upload candidate scores (.xlsx from Cirrus)</b>",
     browse_label_html = "<b>Browse...</b>",
     no_file = "No file selected",
-    quick_overview = "IMPORTANT: QUICK OVERVIEW",
+    quick_overview = "IMPORTANT: OVERVIEW",
     participants = "Participants",
     items = "Items",
     max_score = "Maximum possible score",
@@ -90,13 +90,28 @@ i18n <- list(
 
     # Tabs & section headings
     tab1 = "1. Descriptives",
-    tab2 = "2. Classical assessment analysis",
-    tab3 = "3. Items Flagged for Review",
+    tab2 = "2. Assessment analysis",
+    tab3 = "3. Items flagged for review",
     s11 = "1.1 Statistics about achieved scores",
-    s12 = "1.2 Distribution of achieved Scores",
+    s12 = "1.2 Distribution of achieved scores",
     s21 = "2.1 Assessment statistics",
     s22 = "2.2 Item statistics",
     s23 = "2.3 Item correlations",
+    row_num_participants = "Number of participants",
+    row_max_possible = "Maximum possible score",
+    row_min_achieved = "Minimum achieved score",
+    row_max_achieved = "Maximum achieved score",
+    row_avg_achieved = "Average achieved score",
+    row_median_achieved = "Median achieved score",
+    row_sd = "Standard deviation",
+    row_skewness = "Skewness",
+    row_kurtosis = "Kurtosis",
+    expl_very_difficult = "Less than 20% of participants answered correctly, suggesting the item may be ambiguous, miskeyed, or cover material not sufficiently taught.",
+    expl_very_easy = "More than 80% of participants answered correctly, meaning the item provides limited discrimination between participants.",
+    expl_neg_disc = "Item-total correlation is negative, which indicates that lower-performing participants answered correctly more often than higher-performing participants.",
+    expl_low_disc = "Item-total correlation is below 0.20, which may incidate a weak ability to distinguish between stronger and weaker participants.",
+    expl_alpha = "Item removal increases Cronbach's alpha, which may indicate that the item does not align well with the construct measured by the assessment.",
+    expl_neg_rir = "Item correlates negatively with the rest of the assessment, which may indicate a potential scoring error or content misalignment.",
 
     # Axis labels
     axis_achieved_score = "Achieved score",
@@ -114,7 +129,7 @@ i18n <- list(
     report_descriptives = "1. Descriptives",
     report_descriptives_11 = "1.1 Statistics about achieved scores",
     report_descriptives_12 = "1.2 Distribution of achieved scores",
-    report_caa = "2. Classical assessment analysis",
+    report_caa = "2. Assessment analysis",
     report_caa_21 = "2.1 Assessment statistics",
     report_caa_22 = "2.2 Item statistics",
     report_caa_23 = "2.3 Item correlations",
@@ -140,7 +155,7 @@ i18n <- list(
     report_desc_12_b1 = "Most participants scored in the %s, indicating that this range was most effective in differentiating participant performance.",
     report_desc_12_b2 = "Look out for peaks near the maximum or minimum possible scores, as this may indicate ceiling effects (many very high scores) or floor effects (many very low scores), which can impact the assessment’s ability to distinguish between stronger and weaker participants.",
     report_desc_12_b3 = "Multiple peaks in the distribution may indicate heterogeneous participant groups with different performance levels.",
-    report_caa_intro = "Classical assessment analysis uses statistical indicators to evaluate the quality of the assessment (items). These metrics should be interpreted in the context of the assessment purpose, participant population, and sample size.",
+    report_caa_intro = "An assessment analysis uses statistical indicators to evaluate the quality of the assessment (items). These metrics should be interpreted in the context of the assessment purpose, participant population, and sample size.",
     report_caa_21_intro = "The table below presents key evaluation metrics for the overall assessment. Cell colors follow the thresholds defined in the <i>Guideline Assessment Analysis</i>.",
     report_caa_21_b1 = "<i>Average P (Difficulty)</i>: A value near 0 indicates a very difficult assessment, whereas a value near 1 indicates a very easy one. An assessment with moderate difficulty (typically between %s and %s) tends to provide the greatest discriminatory power.",
     report_caa_21_b2 = "<i>Average RIT and RIR (Discrimination)</i>: These statistics measure the extent to which items differentiate between higher- and lower-performing participants. Values below %1$s (red) indicate weak discrimination, values between %1$s and %2$s (orange) indicate moderate discrimination, and values above %2$s (green) indicate strong discrimination.",
@@ -202,7 +217,7 @@ i18n <- list(
   ),
   nl = list(
     # App chrome
-    app_title = "Psychometrische analyse van Cirrus‑export (PACED)",
+    app_title = "Psychometrische Analyse van Cirrus Exportdata (PACED)",
     disconnect_text = "Je sessie is verlopen.",
     disconnect_refresh = "Herladen",
 
@@ -216,7 +231,7 @@ i18n <- list(
     upload_label_html = "<b>Upload kandidatenscores (.xlsx uit Cirrus)</b>",
     browse_label_html = "<b>Bladeren...</b>",
     no_file = "Geen bestand geselecteerd",
-    quick_overview = "BELANGRIJK: SNEL OVERZICHT",
+    quick_overview = "BELANGRIJK: OVERZICHT",
     participants = "Deelnemers",
     items = "Vragen",
     max_score = "Maximaal haalbare score",
@@ -230,18 +245,33 @@ i18n <- list(
 
     # Tabs & section headings
     tab1 = "1. Beschrijvende statistiek",
-    tab2 = "2. Klassieke toetsanalyse",
+    tab2 = "2. Toetsanalyse",
     tab3 = "3. Vragen gemarkeerd voor review",
     s11 = "1.1 Statistieken over behaalde scores",
     s12 = "1.2 Verdeling van behaalde scores",
     s21 = "2.1 Toetsstatistieken",
     s22 = "2.2 Vraagstatistieken",
     s23 = "2.3 Vraagcorrelaties",
+    row_num_participants = "Aantal deelnemers",
+    row_max_possible = "Maximaal haalbare score",
+    row_min_achieved = "Minimaal behaalde score",
+    row_max_achieved = "Maximaal behaalde score",
+    row_avg_achieved = "Gemiddelde behaalde score",
+    row_median_achieved = "Mediaan van behaalde score",
+    row_sd = "Standaarddeviatie",
+    row_skewness = "Scheefheid",
+    row_kurtosis = "Kurtosis",
+    expl_very_difficult = "Minder dan 20% van de deelnemers beantwoordde correct; mogelijk is het item ambigu, verkeerd gescoord, of behandelt het onvoldoende gedoceerde stof.",
+    expl_very_easy = "Meer dan 80% van de deelnemers beantwoordde correct, wat wijst op beperkte onderscheidingskracht.",
+    expl_neg_disc = "Item-totaalcorrelatie is negatief: lager presterende deelnemers beantwoorden vaker correct dan hoger presterenden.",
+    expl_low_disc = "Item-totaalcorrelatie is lager dan 0,20, wat wijst op beperkt onderscheidend vermogen.",
+    expl_alpha = "Verwijderen van het item verhoogt Cronbach’s alpha; het item sluit mogelijk minder goed aan op het beoogde construct.",
+    expl_neg_rir = "Negatieve correlatie met de rest van de toets; dit kan duiden op een scoringsfout of inhoudelijke misalignment.",
 
     # Axis labels
     axis_achieved_score = "Behaalde score",
     axis_frequency = "Frequentie",
-    axis_item_id = "Item (Cirrus ID)",
+    axis_item_id = "Vraag (Cirrus ID)",
     axis_p_difficulty = "P (Moeilijkheid)",
     axis_rit_discrimination = "RIT (Discriminatie)",
     label_max_score = "Max. score",
@@ -254,7 +284,7 @@ i18n <- list(
     report_descriptives = "1. Beschrijvende statistiek",
     report_descriptives_11 = "1.1 Statistieken over behaalde scores",
     report_descriptives_12 = "1.2 Verdeling van behaalde scores",
-    report_caa = "2. Klassieke toetsanalyse",
+    report_caa = "2. Toetsanalyse",
     report_caa_21 = "2.1 Toetsstatistieken",
     report_caa_22 = "2.2 Vraagstatistieken",
     report_caa_23 = "2.3 Vraagcorrelaties",
@@ -262,7 +292,7 @@ i18n <- list(
 
     # Report: paragraphs & bullets
     report_generated_on = "Gegenereerd op %s door %s",
-    report_summary_intro_html = "Volgens de <i>Richtlijn Toetsanalyse</i> vertonen %s van de %s vragen (%s%%) één of meer psychometrische afwijkingen en kunnen bij inspectie waardevolle inzichten opleveren.",
+    report_summary_intro_html = "Volgens de <i>Richtlijn Toetsanalyse</i> vertonen %s van de %s vragen (%s%%) één of meer psychometrische afwijkingen en kunnen bij een review waardevolle inzichten opleveren.",
     report_bullet_very_difficult = "%s vragen zijn zeer moeilijk.",
     report_bullet_very_easy = "%s vragen zijn zeer makkelijk.",
     report_bullet_low_disc = "%s vragen vertonen lage discriminatie.",
@@ -280,25 +310,25 @@ i18n <- list(
     report_desc_12_b1 = "De meeste deelnemers scoorden in de %s, wat aangeeft dat dit bereik het meest effectief differentieerde.",
     report_desc_12_b2 = "Let op pieken dicht bij de maximale of minimale score: dit kan plafond‑ of vloereffecten aangeven, wat de onderscheidende kracht kan beïnvloeden.",
     report_desc_12_b3 = "Meerdere pieken kunnen wijzen op heterogene groepen met verschillende prestatieniveaus.",
-    report_caa_intro = "Klassieke toetsanalyse gebruikt statistische indicatoren om de kwaliteit van de toets (items) te evalueren. Interpreteer deze in de context van doel, populatie en steekproefgrootte.",
-    report_caa_21_intro = "De tabel hieronder toont kernmaten voor de gehele toets. Celkleuren volgen de drempels uit de <i>Richtlijnen Toetsanalyse</i>.",
+    report_caa_intro = "Een toetsanalyse gebruikt statistische indicatoren om de kwaliteit van de toets(vragen) te evalueren. Interpreteer deze in de context van doel, populatie en steekproefgrootte.",
+    report_caa_21_intro = "De tabel hieronder toont kernmaten voor de gehele toets. Celkleuren volgen de drempels uit de <i>Richtlijn Toetsanalyse</i>.",
     report_caa_21_b1 = "<i>Gemiddelde P (Moeilijkheid)</i>: Een waarde dicht bij 0 duidt op een zeer moeilijke toets; dicht bij 1 op een zeer makkelijke. Gematigde moeilijkheid (typisch tussen %s en %s) geeft doorgaans de beste discriminatie.",
-    report_caa_21_b2 = "<i>Gemiddelde RIT en RIR (Discriminatie)</i>: Maten voor het onderscheidend vermogen van items tussen hoger en lager presterenden. Waarden onder %1$s (rood) zijn zwak, tussen %1$s en %2$s (oranje) gemiddeld, en boven %2$s (groen) sterk.",
-    report_caa_21_b3 = "<i>Cronbach’s alpha (Interne consistentie)</i>: Waarde boven %s (groen) is doorgaans acceptabel. Lagere waarden kunnen wijzen op inconsistente of weinig bijdragende items. Zeer hoge waarden (>0,9) kunnen redundantie betekenen.",
-    report_caa_22_intro = "Deze tabel vat kernmaten per item samen. Celkleuren volgen de drempels uit de <i>Richtlijnen Toetsanalyse</i>.",
-    report_caa_22_b1 = "<i>P (Item‑moeilijkheid)</i>: Aandeel deelnemers dat het item correct beantwoordde. Waarden dicht bij 0: zeer moeilijk; dicht bij 1: zeer makkelijk.",
-    report_caa_22_b2 = "<i>RIT (Item‑totaalcorrelatie)</i>: Correlatie tussen itemscore en totaalscore. Negatieve waarden vragen directe controle.",
-    report_caa_22_b3 = "<i>RIR (Item‑restcorrelatie)</i>: Correlatie tussen item en totaalscore exclusief dat item; interpretatie gelijk aan RIT.",
-    report_caa_22_b4 = "<i>Alpha‑als‑verwijderd</i>: Verandering in Cronbach’s alpha bij verwijdering van het item. Een stijging (rood) suggereert lagere interne consistentie door dit item.",
+    report_caa_21_b2 = "<i>Gemiddelde RIT en RIR (Discriminatie)</i>: Maten voor het onderscheidend vermogen van items tussen hoger en lager presterende deelnemers. Waarden onder %1$s (rood) zijn zwak, tussen %1$s en %2$s (oranje) gemiddeld, en boven %2$s (groen) sterk.",
+    report_caa_21_b3 = "<i>Cronbach’s alpha (Interne consistentie)</i>: Waarde boven %s (groen) is doorgaans acceptabel. Lagere waarden kunnen wijzen op inconsistente of weinig bijdragende vragen. Zeer hoge waarden (>0,9) kunnen redundantie betekenen.",
+    report_caa_22_intro = "Deze tabel vat kernmaten per vraag samen. Celkleuren volgen de drempels uit de <i>Richtlijn Toetsanalyse</i>.",
+    report_caa_22_b1 = "<i>P (Vraag‑moeilijkheid)</i>: Aandeel deelnemers dat het item correct beantwoordde. Waarden dicht bij 0: zeer moeilijk; dicht bij 1: zeer makkelijk.",
+    report_caa_22_b2 = "<i>RIT (Vraag‑totaalcorrelatie)</i>: Correlatie tussen vraagscore en totaalscore. Negatieve waarden vragen directe controle.",
+    report_caa_22_b3 = "<i>RIR (Vraag‑restcorrelatie)</i>: Correlatie tussen vraag en totaalscore exclusief de vraag; interpretatie gelijk aan RIT.",
+    report_caa_22_b4 = "<i>Alpha‑als‑verwijderd</i>: Verandering in Cronbach’s alpha bij verwijdering van de vraag Een stijging (rood) suggereert lagere interne consistentie door de vraag.",
     report_caa_22_plot_intro = "Onderstaande grafiek toont item‑moeilijkheid (P) versus discriminatie (RIT).",
-    report_caa_22_plot_b1 = "Zeer makkelijke/moeilijke items met lage discriminatie leveren weinig meetinformatie en verdienen herziening.",
-    report_caa_22_plot_b2 = "Items met gematigde moeilijkheid en sterke discriminatie dragen het meest bij aan betrouwbaarheid.",
+    report_caa_22_plot_b1 = "Zeer makkelijke/moeilijke vragen met lage discriminatie leveren weinig meetinformatie en verdienen herziening.",
+    report_caa_22_plot_b2 = "Vragen met gematigde moeilijkheid en sterke discriminatie dragen het meest bij aan betrouwbaarheid.",
     report_caa_22_plots_intro = "P (moeilijkheid) en RIT (discriminatie) worden hieronder opnieuw getoond; gekleurde gebieden markeren drempels.",
-    report_caa_23_intro = "Deze heatmap toont correlaties tussen alle items.",
+    report_caa_23_intro = "Deze heatmap toont correlaties tussen alle vragen.",
     report_caa_23_b1 = "Sterke positieve correlaties (>0,6) kunnen duiden op inhoudelijke overlap en mogelijke redundantie.",
-    report_caa_23_b2 = "Negatieve correlaties met meerdere items kunnen wijzen op scoringsfouten of inhoudelijke misalignment.",
+    report_caa_23_b2 = "Negatieve correlaties met meerdere vragen kunnen wijzen op scoringsfouten of inhoudelijke misalignment.",
     report_caa_23_table_intro = "De tabel toont de vijf sterkste positieve en vijf sterkste negatieve correlaties. Rood markeert zeer sterke (>0,6) en negatieve correlaties.",
-    report_flagged_intro = "De onderstaande tabel vat de %s items samen die mogelijk herziening behoeven vanwege psychometrische aandachtspunten. Elk item is voorzien van een signaal en toelichting. De meest relevante items (meeste signalen) staan bovenaan.",
+    report_flagged_intro = "De onderstaande tabel vat de %s vragen samen die mogelijk een review behoeven vanwege psychometrische aandachtspunten. Elke vraag is voorzien van een signaal en toelichting. De meest relevante vragen (meeste signalen) staan bovenaan.",
 
     # Report: descriptors
     skew_pos = "positief scheef, met een tendens naar lagere scores",
@@ -318,7 +348,7 @@ i18n <- list(
     col_avgRIT = "Gemiddelde RIT",
     col_avgRIR = "Gemiddelde RIR",
     col_alpha = "Cronbach’s alpha",
-    col_item = "Item (Cirrus ID)",
+    col_item = "Vraag (Cirrus ID)",
     col_mean = "Gemiddelde",
     col_sd = "SD",
     col_P = "P",
@@ -330,15 +360,15 @@ i18n <- list(
     col_explanation = "Toelichting",
 
     # Report: flagged items messages
-    issue_very_difficult = "Zeer moeilijk item",
-    issue_very_easy = "Zeer makkelijk item",
+    issue_very_difficult = "Zeer moeilijke vraag",
+    issue_very_easy = "Zeer makkelijke vraag",
     issue_neg_disc = "Negatieve discriminatie",
     issue_low_disc = "Lage discriminatie",
     issue_alpha = "Verlaagt testbetrouwbaarheid",
-    issue_neg_rir = "Negatieve item‑restcorrelatie",
+    issue_neg_rir = "Negatieve vraag‑restcorrelatie",
     no_flagged_item = "Geen",
-    no_flagged_issue = "Geen gemarkeerde items",
-    no_flagged_expl = "Alle items vallen binnen de aanbevolen psychometrische drempels."
+    no_flagged_issue = "Geen gemarkeerde vragen",
+    no_flagged_expl = "Alle vragen vallen binnen de aanbevolen psychometrische drempels."
   )
 )
 
@@ -676,6 +706,158 @@ create_flagged_items <- function(input, parsed) {
   return(tab)
 }
 
+# ---------------------------
+# UI table helpers: localize column names for in-app DT tables
+# ---------------------------
+localize_ui_colnames <- function(df, lang = "en", type = c("desc", "test", "item", "corr", "flagged")) {
+  type <- match.arg(type)
+  out <- df
+
+  if (type == "corr") {
+    # Replace ALL occurrences of the duplicated label
+    from_item <- "Item (Cirrus ID)"
+    to_item <- t("col_item", lang) # e.g., "Vraag (Cirrus ID)" in NL (or "Vraag ID" if you set that)
+    from_cor <- "Correlation"
+    to_cor <- t("col_correlation", lang)
+
+    idx_item <- which(colnames(out) == from_item)
+    if (length(idx_item)) colnames(out)[idx_item] <- to_item
+
+    idx_cor <- which(colnames(out) == from_cor)
+    if (length(idx_cor)) colnames(out)[idx_cor] <- to_cor
+
+    return(out)
+  }
+
+  # default behavior for other table types (unchanged)
+  colmap <- switch(type,
+    desc = setNames(c(t("col_statistic", lang), t("col_value", lang)), c("Statistic", "Value")),
+    test = setNames(
+      c(t("col_avgP", lang), t("col_avgRIT", lang), t("col_avgRIR", lang), t("col_alpha", lang)),
+      c("Average P", "Average RIT", "Average RIR", "Cronbach's alpha")
+    ),
+    item = setNames(
+      c(
+        t("col_item", lang), t("col_mean", lang), t("col_sd", lang), t("col_P", lang),
+        t("col_RIT", lang), t("col_RIR", lang), t("col_alpha_if_deleted", lang)
+      ),
+      c("Item (Cirrus ID)", "Mean", "SD", "P", "RIT", "RIR", "Alpha-if-deleted")
+    ),
+    flagged = setNames(
+      c(t("col_item", lang), t("col_issue", lang), t("col_explanation", lang)),
+      c("Item (Cirrus ID)", "Issue", "Explanation")
+    )
+  )
+  common <- intersect(names(colmap), colnames(out))
+  colnames(out)[match(common, colnames(out))] <- unname(colmap[common])
+  out
+}
+
+# Translate content (row labels) for the Descriptives table (no number formatting changes)
+localize_desc_content <- function(df, lang = "en") {
+  # Map English row labels to i18n keys
+  key_map <- setNames(
+    c(
+      "row_num_participants", "row_max_possible", "row_min_achieved",
+      "row_max_achieved", "row_avg_achieved", "row_median_achieved",
+      "row_sd", "row_skewness", "row_kurtosis"
+    ),
+    c(
+      "Number of participants", "Maximum possible score", "Minimum achieved score",
+      "Maximum achieved score", "Average achieved score", "Median achieved score",
+      "Standard deviation", "Skewness", "Kurtosis"
+    )
+  )
+
+  # Translate the first column (row labels)
+  df$Statistic <- ifelse(
+    df$Statistic %in% names(key_map),
+    vapply(df$Statistic, function(k) t(key_map[[k]], lang), character(1)),
+    df$Statistic
+  )
+  df
+}
+
+# Translate content of the flagged-items table: issue labels + explanations (robust to factors/NA)
+translate_flagged_ui <- function(df, lang = "en") {
+  if (is.null(df) || !nrow(df)) {
+    return(df)
+  }
+
+  # Ensure required columns exist
+  required_cols <- c("Item (Cirrus ID)", "Issue", "Explanation")
+  missing_cols <- setdiff(required_cols, colnames(df))
+  if (length(missing_cols)) {
+    return(df)
+  }
+
+  # Coerce to character to avoid strsplit() on non-character vectors
+  df[required_cols] <- lapply(df[required_cols], function(x) {
+    if (is.factor(x)) as.character(x) else as.character(x)
+  })
+
+  # Localize the synthetic "no flagged items" row if present
+  first_item <- df[["Item (Cirrus ID)"]][1]
+  if (identical(first_item, "None")) {
+    df[["Item (Cirrus ID)"]][1] <- t("no_flagged_item", lang)
+    df[["Issue"]][1] <- t("no_flagged_issue", lang)
+    df[["Explanation"]][1] <- t("no_flagged_expl", lang)
+    return(df)
+  }
+
+  # Maps for issues and explanations
+  issue_map <- c(
+    "Very difficult item"             = t("issue_very_difficult", lang),
+    "Very easy item"                  = t("issue_very_easy", lang),
+    "Negative discrimination"         = t("issue_neg_disc", lang),
+    "Low discrimination"              = t("issue_low_disc", lang),
+    "Reduces test reliability"        = t("issue_alpha", lang),
+    "Negative item-rest correlation"  = t("issue_neg_rir", lang)
+  )
+
+  expl_map <- c(
+    "Less than 20% of participants answered correctly, suggesting the item may be ambiguous, miskeyed, or cover material not sufficiently taught." =
+      t("expl_very_difficult", lang),
+    "More than 80% of participants answered correctly, meaning the item provides limited discrimination between participants." =
+      t("expl_very_easy", lang),
+    "Item-total correlation is negative, which indicates that lower-performing participants answered correctly more often than higher-performing participants." =
+      t("expl_neg_disc", lang),
+    "Item-total correlation is below 0.20, which may incidate a weak ability to distinguish between stronger and weaker participants." =
+      t("expl_low_disc", lang),
+    "Item removal increases Cronbach's alpha, which may indicate that the item does not align well with the construct measured by the assessment." =
+      t("expl_alpha", lang),
+    "Item correlates negatively with the rest of the assessment, which may indicate a potential scoring error or content misalignment." =
+      t("expl_neg_rir", lang)
+  )
+
+  # --- Translate Issues (semicolon-separated) ---
+  df[["Issue"]] <- vapply(df[["Issue"]], function(s) {
+    if (is.na(s) || !nzchar(s)) {
+      return(s)
+    }
+    parts <- trimws(unlist(strsplit(s, ";", fixed = TRUE)))
+    if (!length(parts)) {
+      return(s)
+    }
+    parts_tr <- ifelse(parts %in% names(issue_map), issue_map[parts], parts)
+    paste(unique(parts_tr), collapse = "; ")
+  }, character(1))
+
+  # --- Translate Explanations (replace known English sentences) ---
+  df[["Explanation"]] <- vapply(df[["Explanation"]], function(s) {
+    if (is.na(s) || !nzchar(s)) {
+      return(s)
+    }
+    out <- s
+    for (k in names(expl_map)) {
+      out <- gsub(k, expl_map[[k]], out, fixed = TRUE)
+    }
+    out
+  }, character(1))
+
+  df
+}
+
 compute_skewness <- function(x) {
   m <- mean(x)
   s <- sd(x)
@@ -707,8 +889,24 @@ total_cronbach_alpha <- function(data) {
 # ---------------------------
 localize_report_colnames <- function(df, lang = "en", type = c("desc", "test", "item", "corr", "flagged")) {
   type <- match.arg(type)
-  # Make a copy to avoid side-effects
   out <- df
+
+  if (type == "corr") {
+    from_item <- "Item (Cirrus ID)"
+    to_item <- t("col_item", lang)
+    from_cor <- "Correlation"
+    to_cor <- t("col_correlation", lang)
+
+    idx_item <- which(colnames(out) == from_item)
+    if (length(idx_item)) colnames(out)[idx_item] <- to_item
+
+    idx_cor <- which(colnames(out) == from_cor)
+    if (length(idx_cor)) colnames(out)[idx_cor] <- to_cor
+
+    return(out)
+  }
+
+  # default behavior for other types (unchanged)
   colmap <- switch(type,
     desc = setNames(c(t("col_statistic", lang), t("col_value", lang)), c("Statistic", "Value")),
     test = setNames(
@@ -721,10 +919,6 @@ localize_report_colnames <- function(df, lang = "en", type = c("desc", "test", "
         t("col_RIT", lang), t("col_RIR", lang), t("col_alpha_if_deleted", lang)
       ),
       c("Item (Cirrus ID)", "Mean", "SD", "P", "RIT", "RIR", "Alpha-if-deleted")
-    ),
-    corr = setNames(
-      c(t("col_item", lang), t("col_item", lang), t("col_correlation", lang)),
-      c("Item (Cirrus ID)", "Item (Cirrus ID)", "Correlation")
     ),
     flagged = setNames(
       c(t("col_item", lang), t("col_issue", lang), t("col_explanation", lang)),
@@ -776,7 +970,9 @@ build_report_html <- function(
 
   # ----- Tables with coloring (and localized headers) -----
   # Descriptives
-  desc_tab <- localize_report_colnames(descriptives, lang, "desc")
+  # Descriptives (translate CONTENT row labels, then HEADERS)
+  descriptives_loc <- localize_desc_content(descriptives, lang)
+  desc_tab <- localize_report_colnames(descriptives_loc, lang, "desc")
   desc_tab <- knitr::kable(desc_tab, row.names = FALSE, format = "html", table.attr = 'class="left_table"') |>
     kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = "striped")
 
@@ -812,14 +1008,8 @@ build_report_html <- function(
   corr_tab <- knitr::kable(corr_tab, escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
     kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
 
-  # Flagged items table
-  flagged_items_local <- flagged_items
-  # Localize "None"/issue/explanation if needed for Dutch
-  if (!is.null(flagged_items_local) && nrow(flagged_items_local) > 0 && flagged_items_local$`Item (Cirrus ID)`[1] == "None") {
-    flagged_items_local$`Item (Cirrus ID)`[1] <- t("no_flagged_item", lang)
-    flagged_items_local$Issue[1] <- t("no_flagged_issue", lang)
-    flagged_items_local$Explanation[1] <- t("no_flagged_expl", lang)
-  }
+  # Flagged items table (translate CONTENT issues + explanations, then HEADERS)
+  flagged_items_local <- translate_flagged_ui(flagged_items, lang)
   flagged_tab <- localize_report_colnames(flagged_items_local, lang, "flagged")
   flagged_tab <- knitr::kable(flagged_tab, row.names = FALSE, format = "html", table.attr = 'class="left_table"') |>
     kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
@@ -1036,7 +1226,7 @@ ui <- fluidPage(
 # ---------------------------
 server <- function(input, output, session) {
   # Language state
-  lang <- reactiveVal("en")
+  lang <- reactiveVal("nl")
 
   # Disconnect overlay (localized)
   output$disconnect_ui <- renderUI({
@@ -1065,36 +1255,36 @@ server <- function(input, output, session) {
           class = "lang-toggle",
           style = "display: inline-flex; border: 1px solid #ccc; border-radius: 25px; overflow: hidden;",
 
-          # English button
-          actionButton(
-            "lang_en",
-            label = "EN",
-            class = "btn btn-sm",
-            style = paste0(
-              "border-radius: 25px 0 0 25px; margin: 0; padding: 0 12px; border-right: 1px solid #ccc;",
-              if (cur == "en") " background-color: #333; color: white;" else " background-color: #f8f9fa; color: #555;"
-            )
-          ),
-
           # Dutch button
           actionButton(
             "lang_nl",
             label = "NL",
             class = "btn btn-sm",
             style = paste0(
-              "border-radius: 0 25px 25px 0; margin: 0; padding: 0 12px;",
+              "border-radius: 25px 0 0 25px; margin: 0; padding: 0 12px; border-right: 1px solid #ccc;",
               if (cur == "nl") " background-color: #333; color: white;" else " background-color: #f8f9fa; color: #555;"
+            )
+          ),
+
+          # English button
+          actionButton(
+            "lang_en",
+            label = "EN",
+            class = "btn btn-sm",
+            style = paste0(
+              "border-radius: 0 25px 25px 0; margin: 0; padding: 0 12px;",
+              if (cur == "en") " background-color: #333; color: white;" else " background-color: #f8f9fa; color: #555;"
             )
           )
         )
       )
     )
   })
-  observeEvent(input$lang_en, {
-    lang("en")
-  })
   observeEvent(input$lang_nl, {
     lang("nl")
+  })
+  observeEvent(input$lang_en, {
+    lang("en")
   })
 
   observeEvent(input$refresh, {
@@ -1264,33 +1454,112 @@ server <- function(input, output, session) {
 
   # Output tables/plots (UI table headers remain as in original; colors unchanged)
   output$descriptives <- DT::renderDataTable({
-    DT::datatable(descriptives_react(), rownames = FALSE, options = list(dom = "t", ordering = FALSE, pageLength = 9), class = "stripe compact")
+    cur <- lang()
+    df <- descriptives_react()
+
+    # CONTENT translation (row labels)
+    df <- localize_desc_content(df, cur)
+
+    # HEADERS translation
+    df <- localize_ui_colnames(df, cur, "desc")
+
+    DT::datatable(
+      df,
+      rownames = FALSE,
+      options = list(dom = "t", ordering = FALSE, pageLength = 9),
+      class = "stripe compact"
+    )
   })
   output$histogram <- renderPlot(histogram_react())
+
   output$test_stats <- DT::renderDataTable({
-    DT::datatable(test_stats_react(), rownames = FALSE, options = list(dom = "t", ordering = FALSE, pagelength = 1), class = "compact") |>
-      DT::formatStyle("Average P", color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
-      DT::formatStyle("Average RIT", color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
-      DT::formatStyle("Average RIR", color = DT::styleInterval(guidelines$RIR, c("tomato", "orange", "forestgreen"))) |>
-      DT::formatStyle("Cronbach's alpha", color = DT::styleInterval(guidelines$alpha, c("tomato", "forestgreen")))
+    cur <- lang()
+    df <- test_stats_react()
+
+    # HEADERS translation
+    df_loc <- localize_ui_colnames(df, cur, "test")
+
+    # Localized column names for styling references
+    col_avgP <- t("col_avgP", cur)
+    col_avgRIT <- t("col_avgRIT", cur)
+    col_avgRIR <- t("col_avgRIR", cur)
+    col_alpha <- t("col_alpha", cur)
+
+    DT::datatable(df_loc,
+      rownames = FALSE,
+      options = list(dom = "t", ordering = FALSE, pagelength = 1),
+      class = "compact"
+    ) |>
+      DT::formatStyle(col_avgP, color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
+      DT::formatStyle(col_avgRIT, color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
+      DT::formatStyle(col_avgRIR, color = DT::styleInterval(guidelines$RIR, c("tomato", "orange", "forestgreen"))) |>
+      DT::formatStyle(col_alpha, color = DT::styleInterval(guidelines$alpha, c("tomato", "forestgreen")))
   })
+
   output$item_stats <- DT::renderDataTable({
-    DT::datatable(item_stats_react(), rownames = FALSE, options = list(pageLength = 5, scrollY = "250px", autoWidth = TRUE), class = "stripe compact") |>
-      DT::formatStyle("P", color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
-      DT::formatStyle("RIT", color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
-      DT::formatStyle("RIR", color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
-      DT::formatStyle("Alpha-if-deleted", color = DT::styleInterval(c(test_stats_react()[1, 4]), c("forestgreen", "tomato")))
+    cur <- lang()
+    df <- item_stats_react()
+
+    # HEADERS translation
+    df_loc <- localize_ui_colnames(df, cur, "item")
+
+    # Localized column names
+    col_P <- t("col_P", cur)
+    col_RIT <- t("col_RIT", cur)
+    col_RIR <- t("col_RIR", cur)
+    col_alphaD <- t("col_alpha_if_deleted", cur)
+
+    alpha_threshold <- test_stats_react()[1, 4]
+
+    DT::datatable(df_loc,
+      rownames = FALSE,
+      options = list(pageLength = 5, scrollY = "250px", autoWidth = TRUE),
+      class = "stripe compact"
+    ) |>
+      DT::formatStyle(col_P, color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
+      DT::formatStyle(col_RIT, color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
+      DT::formatStyle(col_RIR, color = DT::styleInterval(guidelines$RIT, c("tomato", "orange", "forestgreen"))) |>
+      DT::formatStyle(col_alphaD, color = DT::styleInterval(c(alpha_threshold), c("forestgreen", "tomato")))
   })
+
   output$item_plot <- renderPlot(item_plot_react())
   output$difficulty_dist <- renderPlot(difficulty_dist_react())
   output$discrimination_dist <- renderPlot(discrimination_dist_react())
   output$corr_plot <- renderPlot(corr_plot_react())
+
   output$high_cor_items <- DT::renderDataTable({
-    DT::datatable(high_cor_items_react(), rownames = FALSE, options = list(pageLength = 5, autoWidth = TRUE), class = "stripe compact") |>
-      DT::formatStyle("Correlation", color = DT::styleInterval(c(0, 0.6), c("tomato", "forestgreen", "tomato")))
+    cur <- lang()
+    df <- high_cor_items_react()
+
+    # HEADERS translation
+    df_loc <- localize_ui_colnames(df, cur, "corr")
+
+    col_corr <- t("col_correlation", cur)
+
+    DT::datatable(df_loc,
+      rownames = FALSE,
+      options = list(pageLength = 5, autoWidth = TRUE),
+      class = "stripe compact"
+    ) |>
+      DT::formatStyle(col_corr, color = DT::styleInterval(c(0, 0.6), c("tomato", "forestgreen", "tomato")))
   })
+
   output$flagged_items <- DT::renderDataTable({
-    DT::datatable(flagged_items_react(), rownames = FALSE, options = list(pageLength = 10, autoWidth = TRUE), class = "stripe compact")
+    cur <- lang()
+    df <- flagged_items_react()
+
+    # CONTENT translation (issues + explanations, and "None" row)
+    df <- translate_flagged_ui(df, cur)
+
+    # HEADERS translation
+    df <- localize_ui_colnames(df, cur, "flagged")
+
+    DT::datatable(
+      df,
+      rownames = FALSE,
+      options = list(pageLength = 10, autoWidth = TRUE),
+      class = "stripe compact"
+    )
   })
 
   # Export (HTML report; localized)
