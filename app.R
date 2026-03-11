@@ -68,11 +68,11 @@ i18n <- list(
 
     # Sidebar instructions
     instructions_title = "Instructions",
-    step1 = "Go to Cirrus → Reports",
+    step1 = "Go to Cirrus to the Reports section",
     step2_html = 'Select the test and export "Candidate scores - with criterum scores" (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.xlsx" target="_blank"><u>here</u></a> for an example file)',
     step3 = "Upload the file below and check the overview",
-    step4 = 'Review the results in the tabs and click "Download Report" for interpretations in HTML-format',
-    step5_html = 'Right-click and "Print Page" and select PDF (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.pdf" target="_blank"><u>here</u></a> for an example report)',
+    step4 = 'Click "Download Report" for a HTML-file with the results and their interpretation',
+    step5_html = 'Open the HTML-file, right-click, select "Print Page" and choose PDF (click <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/example.pdf" target="_blank"><u>here</u></a> for an example report)',
     upload_label_html = "<b>Upload candidate scores (.xlsx from Cirrus)</b>",
     browse_label_html = "<b>Browse...</b>",
     no_file = "No file selected",
@@ -159,7 +159,7 @@ i18n <- list(
     report_caa_21_intro = "The table below presents key evaluation metrics for the overall assessment. Cell colors follow the thresholds defined in the <i>Guideline Assessment Analysis</i>.",
     report_caa_21_b1 = "<i>Average P (Difficulty)</i>: A value near 0 indicates a very difficult assessment, whereas a value near 1 indicates a very easy one. An assessment with moderate difficulty (typically between %s and %s) tends to provide the greatest discriminatory power.",
     report_caa_21_b2 = "<i>Average RIT and RIR (Discrimination)</i>: These statistics measure the extent to which items differentiate between higher- and lower-performing participants. Values below %1$s (red) indicate weak discrimination, values between %1$s and %2$s (orange) indicate moderate discrimination, and values above %2$s (green) indicate strong discrimination.",
-    report_caa_21_b3 = "<i>Cronbach's alpha (Internal Consistency)</i>: This is the internal consistency of the assessment. A Value above %s (green) generally indicates acceptable reliability. Lower values may suggest inconsistent items or items that contribute little to the measurement of the intended construct. A very high value (>0.9) may indicate redundancy among items.",
+    report_caa_21_b3 = "<i>Cronbach's alpha (Internal Consistency)</i>: This is the internal consistency of the assessment. A value above %s (green) generally indicates acceptable reliability. Lower values may suggest inconsistent items or items that contribute little to the measurement of the intended construct. A very high value (>0.9) may indicate redundancy among items.",
     report_caa_22_intro = "This table summarizes key evaluation metrics for each individual item. Cell colors follow the thresholds defined in the <i>Guideline Assessment Analysis</i>.",
     report_caa_22_b1 = "<i>P (Item Difficulty)</i>: The P-value represents the proportion of participants who answered the item correctly. Values near 0 indicate very difficult items, while values near 1 indicate very easy items.",
     report_caa_22_b2 = "<i>RIT (Item-Total Correlation)</i>: RIT represents the correlation between an item score and the total score. Higher values indicate that the item aligns well with overall performance. Negative values require immediate review, as they indicate that lower-performing participants answered the item correctly more often than higher-performing participants.",
@@ -223,11 +223,11 @@ i18n <- list(
 
     # Sidebar instructions
     instructions_title = "Instructies",
-    step1 = "Ga in Cirrus naar → Rapporten",
+    step1 = "Ga in Cirrus naar de sectie Rapporten",
     step2_html = 'Selecteer de toets en exporteer "Kandidatenscores - met kriteriascores" (klik <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/voorbeeld.xlsx" target="_blank"><u>hier</u></a> voor een voorbeeldbestand)',
     step3 = "Upload het bestand en controleer het overzicht",
-    step4 = 'Bekijk resultaten in de tabbladen en klik op "Download Rapport" voor interpretaties in HTML‑formaat',
-    step5_html = 'Klik met de rechtermuisknop op "Pagina afdrukken" en kies PDF (klik <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/voorbeeld.pdf" target="_blank"><u>hier</u></a> voor een voorbeelddocument)',
+    step4 = 'Klik op "Download Rapport" voor een HTML-bestand met de resultaten en hun interpretatie',
+    step5_html = 'Open het rapport, klik met de rechtermuisknop, selecteer "Pagina afdrukken" en kies vervolgens PDF (klik <a href="https://raw.githubusercontent.com/koenderks/CirrusAssessmentAnalysis/main/voorbeeld.pdf" target="_blank"><u>hier</u></a> voor een voorbeelddocument)',
     upload_label_html = "<b>Upload kandidatenscores (.xlsx uit Cirrus)</b>",
     browse_label_html = "<b>Bladeren...</b>",
     no_file = "Geen bestand geselecteerd",
@@ -261,12 +261,12 @@ i18n <- list(
     row_sd = "Standaarddeviatie",
     row_skewness = "Scheefheid",
     row_kurtosis = "Kurtosis",
-    expl_very_difficult = "Minder dan 20% van de deelnemers beantwoordde correct; mogelijk is het item ambigu, verkeerd gescoord, of behandelt het onvoldoende gedoceerde stof.",
+    expl_very_difficult = "Minder dan 20% van de deelnemers beantwoordde correct; mogelijk is het item ambigu, verkeerd aangeschreven (miskeyed), of betreft het stof die onvoldoende is aangeboden.",
     expl_very_easy = "Meer dan 80% van de deelnemers beantwoordde correct, wat wijst op beperkte onderscheidingskracht.",
     expl_neg_disc = "Item-totaalcorrelatie is negatief: lager presterende deelnemers beantwoorden vaker correct dan hoger presterenden.",
-    expl_low_disc = "Item-totaalcorrelatie is lager dan 0,20, wat wijst op beperkt onderscheidend vermogen.",
-    expl_alpha = "Verwijderen van het item verhoogt Cronbach’s alpha; het item sluit mogelijk minder goed aan op het beoogde construct.",
-    expl_neg_rir = "Negatieve correlatie met de rest van de toets; dit kan duiden op een scoringsfout of inhoudelijke misalignment.",
+    expl_low_disc = "Item-totaalcorrelatie is lager dan 0,20, wat kan wijzen op beperkt vermogen om onderscheid te maken tussen sterker en zwakker presterende deelnemers.",
+    expl_alpha = "Verwijderen van het item verhoogt Cronbach’s alpha; het item sluit mogelijk onvoldoende aan op het construct dat door de toets wordt gemeten.",
+    expl_neg_rir = "Negatieve correlatie met de rest van de toets; dit kan duiden op een mogelijke scoringsfout of inhoudelijke inconsistentie.",
 
     # Axis labels
     axis_achieved_score = "Behaalde score",
@@ -292,7 +292,7 @@ i18n <- list(
 
     # Report: paragraphs & bullets
     report_generated_on = "Gegenereerd op %s door %s",
-    report_summary_intro_html = "Volgens de <i>Richtlijn Toetsanalyse</i> vertonen %s van de %s vragen (%s%%) één of meer psychometrische afwijkingen en kunnen bij een review waardevolle inzichten opleveren.",
+    report_summary_intro_html = "Volgens de <i>Richtlijn Toetsanalyse</i> vertonen %s van de %s vragen (%s%%) één of meer psychometrische aandachtspunten en kunnen deze bij een review waardevolle inzichten opleveren.",
     report_bullet_very_difficult = "%s vragen zijn zeer moeilijk.",
     report_bullet_very_easy = "%s vragen zijn zeer makkelijk.",
     report_bullet_low_disc = "%s vragen vertonen lage discriminatie.",
@@ -307,7 +307,7 @@ i18n <- list(
     report_desc_11_b4 = "De scheefheid van %s geeft aan dat de verdeling %s is. Positieve scheefheid betekent meer lage en minder hoge scores; negatieve scheefheid het omgekeerde.",
     report_desc_11_b5 = "De kurtosis van %s betekent dat de verdeling %s is. Hogere waarden duiden op sterkere concentratie rond het gemiddelde met meer uitschieters; lagere waarden op een plattere verdeling.",
     report_desc_12_intro = "Het onderstaande histogram visualiseert de verdeling van de scores. De horizontale as toont de scorebereiken; de verticale as het aantal deelnemers binnen elk bereik.",
-    report_desc_12_b1 = "De meeste deelnemers scoorden in de %s, wat aangeeft dat dit bereik het meest effectief differentieerde.",
+    report_desc_12_b1 = "De meeste deelnemers scoorden in de %s, wat aangeeft dat dit bereik het meest effectief onderscheid maakte tussen prestatieniveaus.",
     report_desc_12_b2 = "Let op pieken dicht bij de maximale of minimale score: dit kan plafond‑ of vloereffecten aangeven, wat de onderscheidende kracht kan beïnvloeden.",
     report_desc_12_b3 = "Meerdere pieken kunnen wijzen op heterogene groepen met verschillende prestatieniveaus.",
     report_caa_intro = "Een toetsanalyse gebruikt statistische indicatoren om de kwaliteit van de toets(vragen) te evalueren. Interpreteer deze in de context van doel, populatie en steekproefgrootte.",
@@ -316,7 +316,7 @@ i18n <- list(
     report_caa_21_b2 = "<i>Gemiddelde RIT en RIR (Discriminatie)</i>: Maten voor het onderscheidend vermogen van items tussen hoger en lager presterende deelnemers. Waarden onder %1$s (rood) zijn zwak, tussen %1$s en %2$s (oranje) gemiddeld, en boven %2$s (groen) sterk.",
     report_caa_21_b3 = "<i>Cronbach’s alpha (Interne consistentie)</i>: Waarde boven %s (groen) is doorgaans acceptabel. Lagere waarden kunnen wijzen op inconsistente of weinig bijdragende vragen. Zeer hoge waarden (>0,9) kunnen redundantie betekenen.",
     report_caa_22_intro = "Deze tabel vat kernmaten per vraag samen. Celkleuren volgen de drempels uit de <i>Richtlijn Toetsanalyse</i>.",
-    report_caa_22_b1 = "<i>P (Vraag‑moeilijkheid)</i>: Aandeel deelnemers dat het item correct beantwoordde. Waarden dicht bij 0: zeer moeilijk; dicht bij 1: zeer makkelijk.",
+    report_caa_22_b1 = "<i>P (Vraag‑moeilijkheid)</i>: Het aandeel deelnemers dat het item correct beantwoordde. Waarden dicht bij 0 duiden op zeer moeilijke vragen, waarden dicht bij 1 op zeer makkelijke.",
     report_caa_22_b2 = "<i>RIT (Vraag‑totaalcorrelatie)</i>: Correlatie tussen vraagscore en totaalscore. Negatieve waarden vragen directe controle.",
     report_caa_22_b3 = "<i>RIR (Vraag‑restcorrelatie)</i>: Correlatie tussen vraag en totaalscore exclusief de vraag; interpretatie gelijk aan RIT.",
     report_caa_22_b4 = "<i>Alpha‑als‑verwijderd</i>: Verandering in Cronbach’s alpha bij verwijdering van de vraag Een stijging (rood) suggereert lagere interne consistentie door de vraag.",
@@ -325,18 +325,18 @@ i18n <- list(
     report_caa_22_plot_b2 = "Vragen met gematigde moeilijkheid en sterke discriminatie dragen het meest bij aan betrouwbaarheid.",
     report_caa_22_plots_intro = "P (moeilijkheid) en RIT (discriminatie) worden hieronder opnieuw getoond; gekleurde gebieden markeren drempels.",
     report_caa_23_intro = "Deze heatmap toont correlaties tussen alle vragen.",
-    report_caa_23_b1 = "Sterke positieve correlaties (>0,6) kunnen duiden op inhoudelijke overlap en mogelijke redundantie.",
+    report_caa_23_b1 = "Sterke positieve correlaties (>0,6) kunnen duiden op inhoudelijke overlap en zouden gecontroleerd moeten worden op mogelijke redundantie.",
     report_caa_23_b2 = "Negatieve correlaties met meerdere vragen kunnen wijzen op scoringsfouten of inhoudelijke misalignment.",
     report_caa_23_table_intro = "De tabel toont de vijf sterkste positieve en vijf sterkste negatieve correlaties. Rood markeert zeer sterke (>0,6) en negatieve correlaties.",
-    report_flagged_intro = "De onderstaande tabel vat de %s vragen samen die mogelijk een review behoeven vanwege psychometrische aandachtspunten. Elke vraag is voorzien van een signaal en toelichting. De meest relevante vragen (meeste signalen) staan bovenaan.",
+    report_flagged_intro = "De onderstaande tabel vat de %s vragen samen die mogelijk herziening behoeven vanwege psychometrische aandachtspunten. Elke vraag is voorzien van een signaal en toelichting. De meest relevante vragen (meeste signalen) staan bovenaan.",
 
     # Report: descriptors
     skew_pos = "positief scheef, met een tendens naar lagere scores",
     skew_neg = "negatief scheef, met een tendens naar hogere scores",
     skew_sym = "ongeveer symmetrisch",
-    kurt_high = "spitsiger dan normaalverdeling: meer concentratie rond het gemiddelde en enkele uitschieters",
-    kurt_low = "platter dan normaalverdeling: bredere spreiding met minder uitschieters",
-    kurt_mid = "ongeveer normaal qua spitsheid: evenwichtige spreiding rond het gemiddelde",
+    kurt_high = "spitsiger dan een normaalverdeling, wat wijst op meer concentratie rond het gemiddelde en meer uitschieters",
+    kurt_low = "platter dan een normaalverdeling, met bredere spreiding en minder uitschieters",
+    kurt_mid = "ongeveer normaal in spitsheid, met een evenwichtige spreiding rond het gemiddelde",
     diff_upper = "bovenste bereik (>70%)",
     diff_middle = "middenbereik (>50% & <70%)",
     diff_lower = "onderste bereik (<50%)",
@@ -364,7 +364,7 @@ i18n <- list(
     issue_very_easy = "Zeer makkelijke vraag",
     issue_neg_disc = "Negatieve discriminatie",
     issue_low_disc = "Lage discriminatie",
-    issue_alpha = "Verlaagt testbetrouwbaarheid",
+    issue_alpha = "Vermindert interne consistentie van de toets",
     issue_neg_rir = "Negatieve vraag‑restcorrelatie",
     no_flagged_item = "Geen",
     no_flagged_issue = "Geen gemarkeerde vragen",
@@ -1165,8 +1165,7 @@ build_report_html <- function(
 # UI
 # ---------------------------
 ui <- fluidPage(
-  title = "PACED",
-  tags$head(tags$title("PACED")),
+  tags$script(HTML("document.title = 'PACED';")),
   # --- Visual theme (Bootstrap 5) ---
   theme = bslib::bs_theme(
     version = 5,
@@ -1249,8 +1248,6 @@ server <- function(input, output, session) {
       tags$div(
         class = "app-title-bar-inner",
         tags$div(class = "app-title", t("app_title", cur)),
-
-        # Language toggle container
         tags$div(
           class = "lang-toggle",
           style = "display: inline-flex; border: 1px solid #ccc; border-radius: 25px; overflow: hidden;",
@@ -1261,8 +1258,11 @@ server <- function(input, output, session) {
             label = "NL",
             class = "btn btn-sm",
             style = paste0(
-              "border-radius: 25px 0 0 25px; margin: 0; padding: 0 12px; border-right: 1px solid #ccc;",
-              if (cur == "nl") " background-color: #333; color: white;" else " background-color: #f8f9fa; color: #555;"
+              "border-radius: 25px 0 0 25px;",
+              "margin: 0; padding: 0 12px; border-right: 1px solid #ccc;",
+              "background-color: ", if (cur == "nl") nyenrode_gold else "#FFFFFF", ";",
+              "color: ", nyenrode_blue, ";",
+              "font-weight: 700;"
             )
           ),
 
@@ -1272,8 +1272,11 @@ server <- function(input, output, session) {
             label = "EN",
             class = "btn btn-sm",
             style = paste0(
-              "border-radius: 0 25px 25px 0; margin: 0; padding: 0 12px;",
-              if (cur == "en") " background-color: #333; color: white;" else " background-color: #f8f9fa; color: #555;"
+              "border-radius: 0 25px 25px 0;",
+              "margin: 0; padding: 0 12px;",
+              "background-color: ", if (cur == "en") nyenrode_gold else "#FFFFFF", ";",
+              "color: ", nyenrode_blue, ";",
+              "font-weight: 700;"
             )
           )
         )
