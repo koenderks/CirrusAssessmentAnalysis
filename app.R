@@ -1479,7 +1479,7 @@ server <- function(input, output, session) {
     DT::datatable(
       df,
       rownames = FALSE,
-      options = list(dom = "t", ordering = FALSE, pageLength = 9),
+      options = list(dom = "t", ordering = FALSE, pageLength = 9, stateSave = FALSE),
       class = "stripe compact"
     )
   })
@@ -1500,7 +1500,7 @@ server <- function(input, output, session) {
 
     DT::datatable(df_loc,
       rownames = FALSE,
-      options = list(dom = "t", ordering = FALSE, pagelength = 1),
+      options = list(dom = "t", ordering = FALSE, pagelength = 1, stateSave = FALSE),
       class = "compact"
     ) |>
       DT::formatStyle(col_avgP, color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
@@ -1526,7 +1526,7 @@ server <- function(input, output, session) {
 
     DT::datatable(df_loc,
       rownames = FALSE,
-      options = list(pageLength = 5, scrollY = "250px", autoWidth = TRUE),
+      options = list(pageLength = 5, scrollY = "250px", autoWidth = TRUE, stateSave = FALSE),
       class = "stripe compact"
     ) |>
       DT::formatStyle(col_P, color = DT::styleInterval(guidelines$P, c("tomato", "forestgreen", "tomato"))) |>
@@ -1551,7 +1551,7 @@ server <- function(input, output, session) {
 
     DT::datatable(df_loc,
       rownames = FALSE,
-      options = list(pageLength = 5, autoWidth = TRUE),
+      options = list(pageLength = 5, autoWidth = TRUE, stateSave = FALSE),
       class = "stripe compact"
     ) |>
       DT::formatStyle(col_corr, color = DT::styleInterval(c(0, 0.6), c("tomato", "forestgreen", "tomato")))
@@ -1570,7 +1570,7 @@ server <- function(input, output, session) {
     DT::datatable(
       df,
       rownames = FALSE,
-      options = list(pageLength = 10, autoWidth = TRUE),
+      options = list(pageLength = 10, autoWidth = TRUE, stateSave = FALSE),
       class = "stripe compact"
     )
   })
