@@ -1464,13 +1464,13 @@ server <- function(input, output, session) {
       tabPanel(
         title = t("tab1", cur),
         br(),
-        section_card(t("s11", cur), shinycssloaders::withSpinner(DT::dataTableOutput("descriptives"), type = 7, color = nyenrode_blue, hide.ui = FALSE)),
-        section_card(t("s12", cur), div(style = "width: 100%; margin: 0 auto;", shinycssloaders::withSpinner(plotOutput("histogram", width = "100%"), type = 7, color = nyenrode_blue, hide.ui = FALSE)))
+        section_card(t("s11", cur), shinycssloaders::withSpinner(DT::dataTableOutput("descriptives"), type = 8, color = nyenrode_blue, hide.ui = FALSE)),
+        section_card(t("s12", cur), div(style = "width: 100%; margin: 0 auto;", shinycssloaders::withSpinner(plotOutput("histogram", width = "100%"), type = 8, color = nyenrode_blue, hide.ui = FALSE)))
       ),
       tabPanel(
         title = t("tab2", cur),
         br(),
-        section_card(t("s21", cur), div(style = "padding: 0;", shinycssloaders::withSpinner(DT::dataTableOutput("test_stats"), type = 7, color = nyenrode_blue, hide.ui = FALSE))),
+        section_card(t("s21", cur), div(style = "padding: 0;", shinycssloaders::withSpinner(DT::dataTableOutput("test_stats"), type = 8, color = nyenrode_blue, hide.ui = FALSE))),
         section_card(
           t("s22", cur),
           DT::dataTableOutput("item_stats"),
@@ -1478,8 +1478,8 @@ server <- function(input, output, session) {
             style = "width: 100%; margin: 0 auto;",
             plotOutput("item_plot", width = "100%"),
             fluidRow(
-              column(6, shinycssloaders::withSpinner(plotOutput("difficulty_dist", width = "100%"), type = 7, color = nyenrode_blue, hide.ui = FALSE)),
-              column(6, shinycssloaders::withSpinner(plotOutput("discrimination_dist", width = "100%"), type = 7, color = nyenrode_blue, hide.ui = FALSE))
+              column(6, shinycssloaders::withSpinner(plotOutput("difficulty_dist", width = "100%"), type = 8, color = nyenrode_blue, hide.ui = FALSE)),
+              column(6, shinycssloaders::withSpinner(plotOutput("discrimination_dist", width = "100%"), type = 8, color = nyenrode_blue, hide.ui = FALSE))
             )
           )
         ),
@@ -1487,15 +1487,15 @@ server <- function(input, output, session) {
           t("s23", cur),
           div(
             style = "width: 100%; margin: 0 auto;",
-            shinycssloaders::withSpinner(plotOutput("corr_plot", width = "100%", height = "1000px"), type = 7, color = nyenrode_blue, hide.ui = FALSE),
-            shinycssloaders::withSpinner(DT::dataTableOutput("high_cor_items"), type = 7, color = nyenrode_blue, hide.ui = FALSE)
+            shinycssloaders::withSpinner(plotOutput("corr_plot", width = "100%", height = "1000px"), type = 8, color = nyenrode_blue, hide.ui = FALSE),
+            shinycssloaders::withSpinner(DT::dataTableOutput("high_cor_items"), type = 8, color = nyenrode_blue, hide.ui = FALSE)
           )
         )
       ),
       tabPanel(
         title = t("tab3", cur),
         br(),
-        shinycssloaders::withSpinner(DT::dataTableOutput("flagged_items"), type = 7, color = nyenrode_blue, hide.ui = FALSE)
+        shinycssloaders::withSpinner(DT::dataTableOutput("flagged_items"), type = 8, color = nyenrode_blue, hide.ui = FALSE)
       )
     )
   })
