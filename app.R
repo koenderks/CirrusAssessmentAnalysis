@@ -1165,11 +1165,8 @@ build_report_html <- function(
 # UI
 # ---------------------------
 ui <- fluidPage(
-  tags$script(HTML("
-      if (window.parent && window.parent !== window) {
-        window.parent.document.title = 'PACED';
-      }
-  ")),
+  title = "PACED",
+  tags$script(HTML("window.parent.document.title = 'PACED';")),
   # --- Visual theme (Bootstrap 5) ---
   theme = bslib::bs_theme(
     version = 5,
