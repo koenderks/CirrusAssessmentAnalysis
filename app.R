@@ -1208,6 +1208,11 @@ ui <- fluidPage(
       rel = "icon",
       type = "image/x-icon",
       href = "favicon.ico"
+    ),
+    tags$link(
+      rel = "icon",
+      type = "image/png",
+      href = "favicon.png"
     )
   ),
   tags$script(HTML("
