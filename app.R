@@ -1056,15 +1056,15 @@ build_report_html <- function(
   descriptives_loc <- localize_desc_content(descriptives, lang)
   desc_tab <- localize_report_colnames(descriptives_loc, lang, "desc") |>
     knitr::kable(row.names = FALSE, format = "html", table.attr = 'class="left_table"') |>
-    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = "striped")
+    kableExtra::kable_styling(full_width = FALSE, position = "center")
 
   test_tab <- localize_report_colnames(test_tab, lang, "test") |>
     knitr::kable(escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
-    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+    kableExtra::kable_styling(full_width = FALSE, position = "center")
 
   item_tab <- localize_report_colnames(item_tab, lang, "item") |>
     knitr::kable(escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
-    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+    kableExtra::kable_styling(full_width = FALSE, position = "center")
 
   # Correlation table
   high_corr_items_positive <- high_corr_items[high_corr_items$Correlation > 0, ]
@@ -1075,13 +1075,13 @@ build_report_html <- function(
   corr_tab$Correlation <- kableExtra::cell_spec(corr_tab$Correlation, "html", color = ifelse(corr_tab$Correlation < 0, "tomato", ifelse(corr_tab$Correlation < 0.6, "forestgreen", "tomato")))
   corr_tab <- localize_report_colnames(corr_tab, lang, "corr")
   corr_tab <- knitr::kable(corr_tab, escape = FALSE, row.names = FALSE, format = "html", table.attr = 'class="center_table"') |>
-    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+    kableExtra::kable_styling(full_width = FALSE, position = "center")
 
   # Flagged items table (translate CONTENT issues + explanations, then HEADERS)
   flagged_items_local <- translate_flagged_ui(flagged_items, lang)
   flagged_tab <- localize_report_colnames(flagged_items_local, lang, "flagged")
   flagged_tab <- knitr::kable(flagged_tab, row.names = FALSE, format = "html", table.attr = 'class="left_table"') |>
-    kableExtra::kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover"))
+    kableExtra::kable_styling(full_width = FALSE, position = "center")
 
   # ----- Guideline discrepancy summary -----
   if (!is.null(flagged_items) && nrow(flagged_items) > 0 && flagged_items$`Item (Cirrus ID)`[1] != "None") {
